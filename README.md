@@ -8,7 +8,7 @@
 - Hibernate
 - PostgreSQL
 - Maven
-- Junit 5 + Mockito
+- JUnit 5 + Mockito
 - Logback
 - Jackson
 - Lombok
