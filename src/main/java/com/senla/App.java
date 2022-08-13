@@ -8,7 +8,7 @@ import com.senla.utils.geolocation.Geocoder;
 import java.io.IOException;
 
 public class App {
-    public static void main( String[] args ) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
 
         //String response = Geocoder.getGeocodeResponseFromCoordinates(-179.0,-90.0);

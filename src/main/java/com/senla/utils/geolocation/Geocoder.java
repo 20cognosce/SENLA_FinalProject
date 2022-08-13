@@ -53,5 +53,4 @@ public class Geocoder {
         HttpResponse<String> geocodingResponse = httpClient.send(geocodingRequest, HttpResponse.BodyHandlers.ofString());
         return geocodingResponse.body();
     }
-
 }

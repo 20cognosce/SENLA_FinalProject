@@ -6,8 +6,8 @@
 Стек используемых технологий соответствует изученным при прохождении курса:
 - Spring Framework (Spring IoC, Spring Transaction, Spring MVC, Spring Security)
 - Hibernate
-- PostgreSQL
-- Maven
+- PostgreSQL 14.4
+- Maven 3.8.6
 - JUnit 5 + Mockito
 - Logback
 - Jackson

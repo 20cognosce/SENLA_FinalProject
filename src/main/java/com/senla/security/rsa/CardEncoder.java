@@ -30,11 +30,9 @@ public class CardEncoder {
 
             publicKey = keyPair.getPublic();
             privateKey = keyPair.getPrivate();
-
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public static String encode(String card, PublicKey publicKey) {
