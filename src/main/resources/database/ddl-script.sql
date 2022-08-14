@@ -1,65 +1,69 @@
 create table IF NOT EXISTS public.tariff
 (
     id               serial PRIMARY KEY,
-    price_per_minute decimal,
-    discount         decimal default 1.0000
+    tariff_name      varchar,
+    price_per_minute decimal(19, 4),
+    discount         decimal(5, 4) default 1.0000, -- 30% = 0.3, 70% = 0.7
+    description      varchar
 );
 
 create table IF NOT EXISTS public.subscription
 (
-    id         serial PRIMARY KEY,
-    price      decimal(19, 4),
-    discount   decimal(5, 4) default 1.0000,
-    start_time timestamp,
-    end_time   timestamp
+    id                serial PRIMARY KEY,
+    subscription_name varchar,
+    price             decimal(19, 4),
+    description       varchar
 );
 
 create table IF NOT EXISTS public.users
 (
-    id              serial PRIMARY KEY, -- 2^31 == 2 billion 147 millions
-    user_login      varchar(100) UNIQUE NOT NULL,
-    user_password   varchar,
-    user_role       varchar(50),
+    id            serial PRIMARY KEY, -- 2^31 == 2 billion 147 millions
+    user_login    varchar(100) UNIQUE NOT NULL,
+    user_password varchar,
+    user_role     varchar(50),
 
-    status          varchar(50),
-    user_name       varchar(100),
-    phone           varchar UNIQUE,
-    date_of_birth   date,
+    status        varchar(50),
+    user_name     varchar(100),
+    phone         varchar UNIQUE,
+    date_of_birth date,
 
-    card            varchar(50),
-    tariff_id       int references tariff (id),
-    subscription_id int references subscription (id)
+    card          varchar(50),
+    tariff_id     int references tariff (id) default 1
 );
 
-alter table public.subscription
-    add column user_id int references users (id);
-
-create table IF NOT EXISTS public.rental_point
+create table IF NOT EXISTS public.user2subscription
 (
-    id serial PRIMARY KEY
+    id              serial PRIMARY KEY,
+    user_id         int references users (id),
+    subscription_id int references subscription (id),
+    discount        decimal(5, 4) default 1.0000,
+    start_time      timestamp,
+    end_time        timestamp
 );
 
 create table IF NOT EXISTS public.geolocation
 (
-    id              serial PRIMARY KEY,
+    id           serial PRIMARY KEY,
 
-    latitude        decimal(8, 5), -- (+-180.00000, +-90.00000)
-    longitude       decimal(7, 5),
+    latitude     decimal(8, 5), -- (+-180.00000, +-90.00000)
+    longitude    decimal(7, 5),
 
-    country_code    varchar(10),
-    country_name    varchar(100),
-    county          varchar(100),
-    city            varchar(50),
-    district        varchar(50),
-    street          varchar(100),
-    house_number    varchar(10),
+    country_code varchar(10),
+    country_name varchar(100),
+    county       varchar(100),
+    city         varchar(50),
+    district     varchar(50),
+    street       varchar(100),
+    house_number varchar(10),
 
-    description     text,
-    rental_point_id int references rental_point (id)
+    description  text
 );
 
-alter table public.rental_point
-    add column geolocation_id int references geolocation (id);
+create table IF NOT EXISTS public.rental_point
+(
+    id             serial PRIMARY KEY,
+    geolocation_id int references geolocation (id)
+);
 
 create table IF NOT EXISTS public.scooter
 (

@@ -8,13 +8,10 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -30,20 +27,11 @@ public class Subscription {
     @Column(name = "id")
     Long id;
 
+    @Column(name = "subscription_name")
+    String name;
     @Column(name = "price")
     Float price;
-    @Column(name = "discount")
-    Float discount;
 
-    @Column(name = "start_time")
-    LocalDateTime startTime;
-    @Column(name = "end_time")
-    LocalDateTime endTime;
-
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "subscription")
-    User user;
-
-    public boolean isValid() {
-        return LocalDateTime.now().isBefore(endTime);
-    }
+    @Column(name = "description")
+    String description;
 }

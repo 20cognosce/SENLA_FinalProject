@@ -30,10 +30,14 @@ public class Tariff {
     @Column(name = "id")
     Long id;
 
+    @Column(name = "tariff_name")
+    String name;
     @Column(name = "price_per_minute")
     Float pricePerMinute;
     @Column(name = "discount")
     Float discount;
+    @Column(name = "description")
+    String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tariff")
     List<User> user;

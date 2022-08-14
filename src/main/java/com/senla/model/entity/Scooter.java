@@ -42,7 +42,7 @@ public class Scooter {
     @Column(name = "status")
     ScooterConditionStatus status;
 
-    @Column(name = "id")
+    @Column(name = "charge")
     Float chargePercentage;
     @Column(name = "mileage")
     Integer mileage;

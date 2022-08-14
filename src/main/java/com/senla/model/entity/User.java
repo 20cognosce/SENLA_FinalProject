@@ -59,7 +59,6 @@ public class User {
     @JoinColumn(name = "tariff_id")
     @ManyToOne(fetch = FetchType.EAGER)
     Tariff tariff;
-    @JoinColumn(name = "subscription_id")
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    Subscription subscription;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+    User2Subscription user2Subscription;
 }
