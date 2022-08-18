@@ -1,6 +1,6 @@
 package com.senla.model.entity;
 
-import com.senla.model.enums.RideStatus;
+import com.senla.model.entity_enum.RideStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,9 +45,9 @@ public class Ride {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    RideStatus rideStatus;
+    RideStatus status;
     @Column(name = "price")
-    Float price;
+    Double price;
 
     @JoinColumn(name = "start_rental_point_id")
     @OneToOne(fetch = FetchType.EAGER)

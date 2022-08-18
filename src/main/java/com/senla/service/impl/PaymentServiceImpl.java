@@ -5,7 +5,11 @@ import com.senla.model.entity.Scooter;
 import com.senla.model.entity.Tariff;
 import com.senla.model.entity.User;
 import com.senla.service.PaymentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
+@Service
 public class PaymentServiceImpl implements PaymentService {
 
     @Override

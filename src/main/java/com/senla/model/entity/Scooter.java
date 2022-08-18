@@ -1,6 +1,6 @@
 package com.senla.model.entity;
 
-import com.senla.model.enums.ScooterConditionStatus;
+import com.senla.model.entity_enum.ScooterConditionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Builder
@@ -33,19 +34,18 @@ public class Scooter {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "manufacturer")
-    String manufacturer;
-    @Column(name = "model")
-    String model;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "model_id")
+    ScooterModel model;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     ScooterConditionStatus status;
 
     @Column(name = "charge")
-    Float chargePercentage;
+    Double charge; // 0.7 = 70%
     @Column(name = "mileage")
-    Integer mileage;
+    Double mileage;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rental_point_id")

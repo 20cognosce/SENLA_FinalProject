@@ -1,4 +1,8 @@
 package com.senla.service;
 
-public interface UserService {
+import com.senla.model.entity.User;
+
+public interface UserService extends AbstractService<User> {
+
+    void createUser(User user);
 }

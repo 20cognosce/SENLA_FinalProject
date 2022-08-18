@@ -1,15 +1,14 @@
 package com.senla.dao.impl;
 
-import lombok.Getter;
+import com.senla.dao.RideDao;
+import com.senla.model.entity.Ride;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-@Getter
 @Repository
-public class RideDaoImpl {
+public class RideDaoImpl extends AbstractDaoImpl<Ride> implements RideDao {
 
-	@PersistenceContext
-	private EntityManager entityManager;
+    @Override
+    protected Class<Ride> daoEntityClass() {
+        return Ride.class;
+    }
 }

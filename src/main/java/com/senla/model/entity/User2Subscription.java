@@ -24,26 +24,24 @@ import java.time.LocalDateTime;
 @Table(name = "user2subscription")
 public class User2Subscription {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    Long id;
 
-	@Column(name = "discount")
-	Float discount;
-	@Column(name = "start_time")
-	LocalDateTime startTime;
-	@Column(name = "end_time")
-	LocalDateTime endTime;
+    @Column(name = "start_time")
+    LocalDateTime startTime;
+    @Column(name = "end_time")
+    LocalDateTime endTime;
 
-	@JoinColumn(name = "user_id")
-	@OneToOne(fetch = FetchType.EAGER)
-	User user;
-	@JoinColumn(name = "subscription_id")
-	@OneToOne(fetch = FetchType.EAGER)
-	Subscription subscription;
+    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    User user;
+    @JoinColumn(name = "subscription_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    Subscription subscription;
 
-	public boolean isValid() {
-		return LocalDateTime.now().isBefore(endTime);
-	}
+    public boolean isValid() {
+        return LocalDateTime.now().isBefore(endTime);
+    }
 }

@@ -30,12 +30,10 @@ public class Tariff {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "tariff_name")
+    @Column(name = "name")
     String name;
     @Column(name = "price_per_minute")
-    Float pricePerMinute;
-    @Column(name = "discount")
-    Float discount;
+    Double pricePerMinute;
     @Column(name = "description")
     String description;
 

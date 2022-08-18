@@ -6,10 +6,18 @@ import com.senla.model.entity.Subscription;
 import com.senla.model.entity.Tariff;
 import com.senla.model.entity.User;
 
+import javax.naming.ServiceUnavailableException;
 import java.util.List;
+import java.util.Optional;
 
-public interface RentalPointService {
+public interface RentalPointService extends AbstractService<RentalPoint> {
 
-	List<Scooter> getAvailableScooters(RentalPoint rentalPoint, User user, Tariff userTariff);
-	List<Scooter> getAvailableScooters(RentalPoint rentalPoint, User user, Subscription userSubscription);
+    List<Scooter> getAllAvailableScooters(RentalPoint rentalPoint);
+
+
+    void rentTheScooter(Scooter scooter, User user, Tariff userTariff) throws ServiceUnavailableException;
+
+    void rentTheScooter(Scooter scooter, User user, Subscription userSubscription) throws ServiceUnavailableException;
+
+    Optional<RentalPoint> getByIdWithScooters(long id);
 }

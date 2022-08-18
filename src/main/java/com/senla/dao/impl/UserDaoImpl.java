@@ -1,15 +1,41 @@
 package com.senla.dao.impl;
 
-import lombok.Getter;
+import com.senla.dao.UserDao;
+import com.senla.model.entity.User;
+import com.senla.model.entity_enum.UserAccountStatus;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-@Getter
 @Repository
-public class UserDaoImpl {
+public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
-	@PersistenceContext
-	private EntityManager entityManager;
+    @Override
+    protected Class<User> daoEntityClass() {
+        return User.class;
+    }
+
+    @Override
+    public Optional<User> getById(long id) {
+        Optional<User> optionalUser = Optional.ofNullable(entityManager.find(daoEntityClass(), id));
+
+        if (optionalUser.isPresent()) {
+            if (optionalUser.get().getStatus() == UserAccountStatus.DELETED) {
+                return Optional.empty();
+            }
+        }
+
+        return optionalUser;
+    }
+
+    @Override
+    public List<User> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+                          String fieldToOrderBy,
+                          boolean asc,
+                          int limit) {
+        mapOfFieldNamesAndValuesToSelectBy.put("status", UserAccountStatus.ACTIVE);
+        return super.getAll(mapOfFieldNamesAndValuesToSelectBy, fieldToOrderBy, asc, limit);
+    }
 }

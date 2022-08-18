@@ -27,10 +27,10 @@ public class Subscription {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "subscription_name")
+    @Column(name = "name")
     String name;
     @Column(name = "price")
-    Float price;
+    Double price;
 
     @Column(name = "description")
     String description;

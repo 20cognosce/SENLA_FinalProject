@@ -1,8 +1,8 @@
 package com.senla.model.entity;
 
 
-import com.senla.model.enums.Role;
-import com.senla.model.enums.UserAccountStatus;
+import com.senla.model.entity_enum.Role;
+import com.senla.model.entity_enum.UserAccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,24 +37,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
-    @Column(name = "user_login")
+    @Column(name = "login")
     String login;
-    @Column(name = "user_password")
+    @Column(name = "hash_password")
     String hashPassword;
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_role")
+    @Column(name = "role")
     Role role;
 
     @Column(name = "status")
     UserAccountStatus status;
-    @Column(name = "user_name")
+    @Column(name = "name")
     String name;
     @Column(name = "phone")
-    String phoneNumber; //TODO: regex, validation
+    String phone; //TODO: regex, validation
     @Column(name = "date_of_birth")
     LocalDate dateOfBirth; //TODO: >18
 
-    @Column(name = "card")
+    @Column(name = "credit_card")
     String creditCard; //TODO: encryption
     @JoinColumn(name = "tariff_id")
     @ManyToOne(fetch = FetchType.EAGER)

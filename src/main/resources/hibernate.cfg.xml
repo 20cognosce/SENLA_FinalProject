@@ -24,6 +24,7 @@
         <mapping class="com.senla.model.entity.RentalPoint"/>
         <mapping class="com.senla.model.entity.Geolocation"/>
         <mapping class="com.senla.model.entity.Scooter"/>
+        <mapping class="com.senla.model.entity.ScooterModel"/>
         <mapping class="com.senla.model.entity.Ride"/>
     </session-factory>
 </hibernate-configuration>

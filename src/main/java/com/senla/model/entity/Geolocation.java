@@ -1,5 +1,6 @@
 package com.senla.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,6 +53,7 @@ public class Geolocation {
     @Column(name = "description")
     String description;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "geolocation", cascade = CascadeType.ALL)
     RentalPoint rentalPoint;
 }

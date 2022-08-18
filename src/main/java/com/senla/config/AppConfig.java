@@ -1,11 +1,10 @@
 package com.senla.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -19,50 +18,64 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
 
-@Configuration
-@ComponentScan(basePackages = "com.senla")
-@EnableTransactionManagement
 @Slf4j
+@EnableTransactionManagement
+@ComponentScan(basePackages = "com.senla")
+@Configuration
 public class AppConfig {
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-		PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
-		configurer.setLocation(new ClassPathResource("configuration/config.properties"));
-		return configurer;
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setDatabase(Database.POSTGRESQL);
-		vendorAdapter.setGenerateDdl(true);
+    /*@Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+        configurer.setLocation(new ClassPathResource("configuration/config.properties"));
 
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setDataSource(dataSource());
-		return factory;
-	}
+        Properties prop = new Properties();
+        try {
+            prop.store(new FileOutputStream("config.properties"), null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        prop.setProperty("log.folder", System.getProperty("user.dir")); //path to project folder
+        return configurer;
+    }*/
 
-	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-		return new JpaTransactionManager(entityManagerFactory);
-	}
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(Database.POSTGRESQL);
+        vendorAdapter.setGenerateDdl(true);
 
-	@Bean
-	public DataSource dataSource() {
-		Properties prop = new Properties();
-		try {
-			prop.load(AppConfig.class.getClassLoader().getResourceAsStream("configuration/config.properties"));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setDataSource(dataSource());
+        return factory;
+    }
 
-		DriverManagerDataSource driver = new DriverManagerDataSource();
-		driver.setDriverClassName(prop.getProperty("spring.datasource.driver-class-name"));
-		driver.setUrl(prop.getProperty("spring.datasource.url"));
-		driver.setUsername(prop.getProperty("spring.datasource.username"));
-		driver.setPassword(prop.getProperty("spring.datasource.password"));
-		return driver;
-	}
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        Properties prop = new Properties();
+        try {
+            prop.load(AppConfig.class.getClassLoader().getResourceAsStream("configuration/config.properties"));
+        } catch (IOException e) {
+            log.error("Не удалось открыть property файл", e);
+            throw new RuntimeException(e);
+        }
+
+        DriverManagerDataSource driver = new DriverManagerDataSource();
+        driver.setDriverClassName(prop.getProperty("spring.datasource.driver-class-name"));
+        driver.setUrl(prop.getProperty("spring.datasource.url"));
+        driver.setUsername(prop.getProperty("spring.datasource.username"));
+        driver.setPassword(prop.getProperty("spring.datasource.password"));
+        return driver;
+    }
 }
