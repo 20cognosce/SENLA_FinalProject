@@ -15,7 +15,7 @@ public interface AbstractDao<T> {
     void delete(T element);
 
     List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                   String fieldToOrderBy,
+                   String orderBy,
                    boolean asc,
                    int limit);
 }

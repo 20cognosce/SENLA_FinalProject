@@ -45,14 +45,14 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
     @Override
     public List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                          String fieldToOrderBy,
+                          String orderBy,
                           boolean asc,
                           int limit) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(daoEntityClass());
         Root<T> tRoot = cq.from(daoEntityClass());
 
-        Order order = new OrderImpl(tRoot.get(fieldToOrderBy), asc);
+        Order order = new OrderImpl(tRoot.get(orderBy), asc);
         List<Predicate> predicates = new ArrayList<>();
         mapOfFieldNamesAndValuesToSelectBy.forEach((key, value) -> predicates.add(cb.equal(tRoot.get(key), value)));
 

@@ -18,7 +18,7 @@ public interface AbstractService<T> {
     map.put("street", "улица Кабяка");
      */
     List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                   String fieldToOrderBy,
+                   String orderBy,
                    boolean asc,
                    int limit);
 
@@ -28,15 +28,10 @@ public interface AbstractService<T> {
 
     /**
      * This method takes a selection DTO object, which is the model for selection.
-     * If the field name is composite, it will be parsed and put renamed like dateOfBirth -> date_of_birth.
      * <p>
      *     <b>NOTE:</b>
      *     Use only primitive types, boxed types, parsable types like LocalDate or Enum in SelectionDto
-     *     so that it could be selected within one table's line.
-     * </p>
-     * <p>
-     *     <b>NOTE:</b>
-     *     Field's name must be corresponded with table's column: name -> name, anyField -> any_field
+     *     so that it could be selected within one table's line without joins.
      * </p>
      *
      * @author Dmitry Vert

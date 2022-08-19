@@ -1,6 +1,6 @@
 package com.senla.model.entity;
 
-import com.senla.model.entity_enum.ScooterConditionStatus;
+import com.senla.model.entityenum.ScooterConditionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

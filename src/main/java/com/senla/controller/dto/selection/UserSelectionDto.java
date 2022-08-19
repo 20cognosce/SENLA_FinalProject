@@ -1,7 +1,7 @@
 package com.senla.controller.dto.selection;
 
-import com.senla.model.entity_enum.Role;
-import com.senla.model.entity_enum.UserAccountStatus;
+import com.senla.model.entityenum.Role;
+import com.senla.model.entityenum.UserAccountStatus;
 
 import java.time.LocalDate;
 

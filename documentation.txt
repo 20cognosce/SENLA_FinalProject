@@ -1,5 +1,3 @@
 Default controller's endpoint - /v1/
 
 GET /v1/ - README.md
-GET /v1/doc - documentation.txt
-GET /v1/req - requirements.txt

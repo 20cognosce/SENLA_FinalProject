@@ -2,7 +2,7 @@ package com.senla.service.impl;
 
 import com.senla.dao.UserDao;
 import com.senla.model.entity.User;
-import com.senla.model.entity_enum.UserAccountStatus;
+import com.senla.model.entityenum.UserAccountStatus;
 import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

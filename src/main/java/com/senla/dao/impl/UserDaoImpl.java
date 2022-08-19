@@ -2,7 +2,7 @@ package com.senla.dao.impl;
 
 import com.senla.dao.UserDao;
 import com.senla.model.entity.User;
-import com.senla.model.entity_enum.UserAccountStatus;
+import com.senla.model.entityenum.UserAccountStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,10 +32,10 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     @Override
     public List<User> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                          String fieldToOrderBy,
+                          String orderBy,
                           boolean asc,
                           int limit) {
         mapOfFieldNamesAndValuesToSelectBy.put("status", UserAccountStatus.ACTIVE);
-        return super.getAll(mapOfFieldNamesAndValuesToSelectBy, fieldToOrderBy, asc, limit);
+        return super.getAll(mapOfFieldNamesAndValuesToSelectBy, orderBy, asc, limit);
     }
 }

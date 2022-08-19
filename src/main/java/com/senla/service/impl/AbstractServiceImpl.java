@@ -2,8 +2,6 @@ package com.senla.service.impl;
 
 import com.senla.controller.dto.selection.SelectionDto;
 import com.senla.dao.AbstractDao;
-import com.senla.model.entity.User;
-import com.senla.model.entity_enum.UserAccountStatus;
 import com.senla.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,10 +33,10 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
 
     @Override
     public List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                          String fieldToOrderBy,
+                          String orderBy,
                           boolean ascending,
                           int limit) {
-        return getDefaultDao().getAll(mapOfFieldNamesAndValuesToSelectBy, fieldToOrderBy, ascending, limit);
+        return getDefaultDao().getAll(mapOfFieldNamesAndValuesToSelectBy, orderBy, ascending, limit);
     }
 
     @Override
@@ -75,13 +73,16 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
 
     @Override
     public <SelectionDtoClass> Map<String, Object> getMapOfObjectFieldsAndValues(@SelectionDto SelectionDtoClass model) {
+        if (Objects.isNull(model)) {
+            return new HashMap<>();
+        }
         Field[] fields = model.getClass().getDeclaredFields();
         Map<String, Object> result = new HashMap<>();
 
         Arrays.stream(fields).forEach(field -> {
             try {
                 field.setAccessible(true);
-                String fieldName = field.getName().replaceAll("([A-Z]+)", "_$1").toLowerCase(Locale.ROOT);
+                String fieldName = field.getName();
                 Object fieldValue = field.get(model) instanceof Enum ? ((Enum<?>) field.get(model)).name() : field.get(model);
                 result.put(fieldName, fieldValue);
             } catch (IllegalAccessException e) {

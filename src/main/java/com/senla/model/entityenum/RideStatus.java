@@ -1,4 +1,4 @@
-package com.senla.model.entity_enum;
+package com.senla.model.entityenum;
 
 public enum RideStatus {
 

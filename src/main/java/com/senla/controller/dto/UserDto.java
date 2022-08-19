@@ -2,8 +2,8 @@ package com.senla.controller.dto;
 
 import com.senla.model.entity.Tariff;
 import com.senla.model.entity.User2Subscription;
-import com.senla.model.entity_enum.Role;
-import com.senla.model.entity_enum.UserAccountStatus;
+import com.senla.model.entityenum.Role;
+import com.senla.model.entityenum.UserAccountStatus;
 
 import java.time.LocalDate;
 

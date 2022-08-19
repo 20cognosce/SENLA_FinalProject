@@ -1,6 +1,7 @@
 package com.senla.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.collection.spi.PersistentCollection;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,7 +27,11 @@ public class AppConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setPropertyCondition(context ->
+                        !(context.getSource() instanceof PersistentCollection)
+        );
+        return modelMapper;
     }
 
     /*@Bean

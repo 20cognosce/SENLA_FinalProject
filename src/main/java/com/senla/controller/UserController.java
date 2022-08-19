@@ -28,16 +28,16 @@ public class UserController {
         //то при попытке создания пользователя с уже существующим логином EntityManager должен кинуть эксепшн
     }
 
-    /*@GetMapping(params = {"fieldToOrderBy", "asc", "limit"})
+    /*@GetMapping(params = {"orderBy", "asc", "limit"})
     public List<UserDto> getAll(@RequestBody UserSelectionDto selectionModel,
-                                @RequestParam(value = "fieldToOrderBy", defaultValue = "id", required = false) String fieldToOrderBy,
+                                @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
                                 @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
                                 @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
 
         Map<String, Object> selectParameters = userService.getMapOfObjectFieldsAndValues(selectionModel);
         selectParameters.entrySet().removeIf(entry -> Objects.isNull(entry.getValue()));
 
-        List<User> users = userService.getAll(selectParameters, fieldToOrderBy, asc, limit);
+        List<User> users = userService.getAll(selectParameters, orderBy, asc, limit);
         return users.stream().map(userMapper::convertToDto).collect(toList());
     }*/
 

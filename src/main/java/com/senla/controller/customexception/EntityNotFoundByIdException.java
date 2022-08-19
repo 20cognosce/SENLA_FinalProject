@@ -1,4 +1,4 @@
-package com.senla.controller.custom_exceptions;
+package com.senla.controller.customexception;
 
 import java.util.NoSuchElementException;
 

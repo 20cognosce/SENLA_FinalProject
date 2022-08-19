@@ -1,8 +1,8 @@
 package com.senla.model.entity;
 
 
-import com.senla.model.entity_enum.Role;
-import com.senla.model.entity_enum.UserAccountStatus;
+import com.senla.model.entityenum.Role;
+import com.senla.model.entityenum.UserAccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
