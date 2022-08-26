@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,35 +33,36 @@ public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(fetch = FetchType.EAGER)
-    User user;
+    @OneToOne
+    private User user;
     @JoinColumn(name = "scooter_id")
-    @OneToOne(fetch = FetchType.EAGER)
-    Scooter scooter;
+    @OneToOne
+    private Scooter scooter;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    RideStatus status;
+    private RideStatus status;
     @Column(name = "price")
-    Double price;
+    private Double price;
 
     @JoinColumn(name = "start_rental_point_id")
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     RentalPoint startRentalPoint;
+
     @JoinColumn(name = "end_rental_point_id")
-    @OneToOne(fetch = FetchType.EAGER)
-    RentalPoint endRentalPoint;
+    @OneToOne
+    private RentalPoint endRentalPoint;
 
     @Column(name = "start_timestamp")
-    LocalDateTime startTimestamp;
+    private LocalDateTime startTimestamp;
     @Column(name = "end_timestamp")
-    LocalDateTime endTimestamp;
+    private LocalDateTime endTimestamp;
 
     @Column(name = "ride_mileage")
-    Integer rideMileage;
+    private Integer rideMileage;
 
     public Duration getRideDuration() {
         if (Objects.isNull(endTimestamp)) {

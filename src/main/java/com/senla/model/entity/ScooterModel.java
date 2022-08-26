@@ -6,12 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Builder
 @Getter
@@ -25,20 +29,23 @@ public class ScooterModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "manufacturer")
-    String manufacturer;
+    private String manufacturer;
     @Column(name = "model")
-    String name;
+    private String name;
     @Column(name = "scooter_weight")
-    Integer scooterWeight;
+    private Integer scooterWeight;
     @Column(name = "max_weight_limit")
-    Integer maxWeightLimit;
+    private Integer maxWeightLimit;
     @Column(name = "max_speed")
-    Integer maxSpeed;
+    private Integer maxSpeed;
     @Column(name = "max_range")
-    Integer maxRange;
+    private Integer maxRange;
     @Column(name = "price")
-    Double price;
+    private Double price;
+
+    @OneToMany(mappedBy = "model", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    List<Scooter> scooters;
 }

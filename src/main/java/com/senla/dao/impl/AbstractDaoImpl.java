@@ -29,7 +29,7 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public Optional<T> getById(long id) {
+    public Optional<T> getById(Long id) {
         return Optional.ofNullable(entityManager.find(daoEntityClass(), id));
     }
 

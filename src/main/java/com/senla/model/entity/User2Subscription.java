@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,19 +26,19 @@ public class User2Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "start_time")
-    LocalDateTime startTime;
+    private LocalDateTime startTime;
     @Column(name = "end_time")
-    LocalDateTime endTime;
+    private LocalDateTime endTime;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(fetch = FetchType.EAGER)
-    User user;
+    @OneToOne
+    private User user;
     @JoinColumn(name = "subscription_id")
-    @OneToOne(fetch = FetchType.EAGER)
-    Subscription subscription;
+    @OneToOne
+    private Subscription subscription;
 
     public boolean isValid() {
         return LocalDateTime.now().isBefore(endTime);

@@ -46,11 +46,6 @@ VALUES (1, 'Стандарт', 499, 'Подписка на безлимитно�
        (2, 'Молния', 749, 'Молниеносная подписка на безлимитное использование мощных самокатов за 749 рублей в месяц.'),
        (3, 'Вечная', 19990, 'Вечная подписка без ограничений только для уникальных пользователей');
 
-/*insert into users(id, login, hash_password, role, status, name, phone, date_of_birth, credit_card, tariff_id)
-VALUES (1, 'admin', 'admin', 'ADMIN', 'ACTIVE', 'Dmitry Vert', '+79014013207', '2002-08-27', '', 1),
-       (2, 'manager', 'manager', 'MANAGER', 'ACTIVE', 'Manager Manager', '+78005553535', '2000-01-01', '', 1),
-       (3, 'user', 'user', 'USER', 'ACTIVE', 'User User', '+78005553535', '2000-01-01', '', 1);*/
-
 insert into scooter_model(id, manufacturer, model, scooter_weight, max_weight_limit, max_speed, max_range, price)
 VALUES (1, 'Xiaomi', 'Xiaomi Mi Electric Scooter 1S', 12.5, 100, 25, 45, 34490),
        (2, 'Xiaomi', 'Mijia M365 Pro', 14.2, 100, 25, 45, 37990),

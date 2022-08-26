@@ -25,13 +25,13 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "price")
-    Double price;
+    private Double price;
 
     @Column(name = "description")
-    String description;
+    private String description;
 }

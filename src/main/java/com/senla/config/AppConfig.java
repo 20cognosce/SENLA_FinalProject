@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -28,26 +30,24 @@ public class AppConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setPropertyCondition(context ->
-                        !(context.getSource() instanceof PersistentCollection)
-        );
+        //not an uninitialized persistence collection and not null
+        modelMapper.getConfiguration().setPropertyCondition(context -> {
+            Object src = context.getSource();
+            if (src instanceof PersistentCollection) {
+                return ((PersistentCollection) src).wasInitialized();
+            }
+            return true;
+        });
+
         return modelMapper;
     }
 
-    /*@Bean
+    @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         configurer.setLocation(new ClassPathResource("configuration/config.properties"));
-
-        Properties prop = new Properties();
-        try {
-            prop.store(new FileOutputStream("config.properties"), null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        prop.setProperty("log.folder", System.getProperty("user.dir")); //path to project folder
         return configurer;
-    }*/
+    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

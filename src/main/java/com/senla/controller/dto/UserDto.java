@@ -4,21 +4,25 @@ import com.senla.model.entity.Tariff;
 import com.senla.model.entity.User2Subscription;
 import com.senla.model.entityenum.Role;
 import com.senla.model.entityenum.UserAccountStatus;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@Setter
+@Getter
 public class UserDto {
 
-    Long id;
-    String login;
-    String password; //TODO: receive but do not send
-    Role role;
+    private Long id;
+    private Role role;
 
-    UserAccountStatus status;
-    String name;
-    String phone;
-    LocalDate dateOfBirth;
+    private UserAccountStatus status;
+    private String name;
+    private String phone;
+    private LocalDate dateOfBirth;
 
-    Tariff tariff;
-    User2Subscription user2Subscription;
+    private Tariff tariff;
+    private User2Subscription user2Subscription;
 }

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,12 +28,12 @@ public class RentalPoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "geolocation_id")
-    Geolocation geolocation;
+    private Geolocation geolocation;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rentalPoint")
-    List<Scooter> scooters;
+    private List<Scooter> scooters = new ArrayList<>();
 }

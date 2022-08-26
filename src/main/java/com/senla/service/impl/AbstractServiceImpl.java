@@ -1,18 +1,19 @@
 package com.senla.service.impl;
 
+import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.controller.dto.selection.SelectionDto;
 import com.senla.dao.AbstractDao;
+import com.senla.model.entity.RentalPoint;
 import com.senla.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.persistence.NonUniqueResultException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,14 +22,23 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
 
     protected abstract D getDefaultDao();
 
+    @Transactional
     @Override
-    public void create(T element) throws KeyAlreadyExistsException {
+    public void create(T element) {
         getDefaultDao().create(element);
     }
 
+    @Transactional
     @Override
-    public void delete(T element) throws NoSuchElementException {
-        getDefaultDao().delete(element);
+    public void update(T element) {
+        getDefaultDao().update(element);
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        getDefaultDao().delete(getDefaultDao().getById(id)
+                .orElseThrow(() -> new EntityNotFoundByIdException(id, RentalPoint.class)));
     }
 
     @Override
@@ -40,12 +50,12 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
     }
 
     @Override
-    public Optional<T> getById(long id) {
+    public Optional<T> getById(Long id) {
         return getDefaultDao().getById(id);
     }
 
     @Override
-    public <DTO> T updateEntityFromDto(T original, DTO dto, Class<T> originalClass) {
+    public <DTO, O> O updateEntityFromDto(O original, DTO dto, Class<O> originalClass) {
         Field[] dtoFields = dto.getClass().getDeclaredFields();
 
         Arrays.stream(dtoFields).forEach(dtoField -> {
@@ -72,10 +82,11 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
     }
 
     @Override
-    public <SelectionDtoClass> Map<String, Object> getMapOfObjectFieldsAndValues(@SelectionDto SelectionDtoClass model) {
+    public Map<String, Object> getMapOfObjectFieldsAndValues(SelectionDto model) {
         if (Objects.isNull(model)) {
             return new HashMap<>();
         }
+
         Field[] fields = model.getClass().getDeclaredFields();
         Map<String, Object> result = new HashMap<>();
 
@@ -83,7 +94,7 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
             try {
                 field.setAccessible(true);
                 String fieldName = field.getName();
-                Object fieldValue = field.get(model) instanceof Enum ? ((Enum<?>) field.get(model)).name() : field.get(model);
+                Object fieldValue = field.get(model);
                 result.put(fieldName, fieldValue);
             } catch (IllegalAccessException e) {
                 log.error("Поле объекта DTO не доступно для модификации", e);

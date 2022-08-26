@@ -8,7 +8,7 @@ public interface AbstractDao<T> {
 
     void create(T element);
 
-    Optional<T> getById(long id);
+    Optional<T> getById(Long id);
 
     void update(T element);
 

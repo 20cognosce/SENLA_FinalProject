@@ -44,6 +44,7 @@
 		<junit.jupiter.engine.version>5.9.0</junit.jupiter.engine.version>
 		<mockito.core.version>4.6.1</mockito.core.version>
 		<mockito.junit.jupiter.version>4.6.1</mockito.junit.jupiter.version>
+		<spring.test.version>5.3.22</spring.test.version>
 		<!--LOMBOK-->
 		<lombok.version>1.18.24</lombok.version>
 	</properties>
@@ -144,11 +145,11 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.databind.version}</version>
 		</dependency>
-		<!--<dependency>
+		<dependency>
 		  <groupId>com.fasterxml.jackson.datatype</groupId>
 		  <artifactId>jackson-datatype-jsr310</artifactId>
 		  <version>${jackson.datatype.jsr310.version}</version>
-		</dependency>-->
+		</dependency> <!--Java 8 date/time type `java.time.LocalDate` not supported by default-->
 
 		<!--TESTING-->
 		<dependency>
@@ -169,6 +170,13 @@
 			<version>${mockito.junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.test.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<!--LOMBOK-->
 		<dependency>

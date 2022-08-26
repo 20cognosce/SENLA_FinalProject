@@ -10,7 +10,6 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,31 +28,38 @@ public class Geolocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "latitude")
-    Double latitude;
+    private Double latitude = 0d;
     @Column(name = "longitude")
-    Double longitude;
+    private Double longitude = 0d;
 
     @Column(name = "country_code")
-    String countryCode;
+    private String countryCode = "";
+
     @Column(name = "country_name")
-    String countryName;
+    private String countryName = "";
+
     @Column(name = "county")
-    String county;
+    private String county = "";
+
     @Column(name = "city")
-    String city;
+    private String city = "";
+
     @Column(name = "district")
-    String district;
+    private String district = "";
+
     @Column(name = "street")
-    String street;
+    private String street = "";
+
     @Column(name = "house_number")
-    String houseNumber;
+    private String houseNumber = "";
+
     @Column(name = "description")
-    String description;
+    private String description = "";
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "geolocation", cascade = CascadeType.ALL)
-    RentalPoint rentalPoint;
+    @OneToOne(mappedBy = "geolocation", cascade = CascadeType.ALL)
+    private RentalPoint rentalPoint;
 }

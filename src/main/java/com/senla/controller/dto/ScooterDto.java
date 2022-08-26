@@ -1,21 +1,20 @@
 package com.senla.controller.dto;
 
-import com.senla.model.entity.ScooterModel;
 import com.senla.model.entityenum.ScooterConditionStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class ScooterDto {
 
-    Long id;
-    ScooterModel model;
-    ScooterConditionStatus status;
-    Double charge;
-    Double mileage;
+    private Long id;
+    private ScooterModelDto model;
+    private ScooterConditionStatus status;
+    private Double charge;
+    private Double mileage;
 
-    Long rentalPointId;
+    private Long rentalPointId;
 }

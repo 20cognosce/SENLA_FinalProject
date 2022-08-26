@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,29 +35,31 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
     @Column(name = "login")
-    String login;
+    private String login;
     @Column(name = "hash_password")
-    String hashPassword;
+    private String hashPassword;
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    Role role;
+    private Role role;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    UserAccountStatus status;
+    private UserAccountStatus status;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "phone")
-    String phone; //TODO: regex, validation
+    private String phone;
     @Column(name = "date_of_birth")
-    LocalDate dateOfBirth; //TODO: >18
+    private LocalDate dateOfBirth;
 
     @Column(name = "credit_card")
-    String creditCard; //TODO: encryption
+    private String creditCard; //TODO: encryption
+
     @JoinColumn(name = "tariff_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    Tariff tariff;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
-    User2Subscription user2Subscription;
+    @ManyToOne
+    private Tariff tariff;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private User2Subscription user2Subscription;
 }

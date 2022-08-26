@@ -1,6 +1,10 @@
 package com.senla.utils.geolocation;
 
-import com.senla.utils.constants.Constants;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.senla.model.entity.Geolocation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,16 +14,58 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-
+import java.util.Objects;
 
 //using HERE location platform (Google Maps analog)
+@Slf4j
 public class Geocoder {
 
-    private static final String GEOCODING_RESOURCE = Constants.GEOCODING_RESOURCE;
-    public static final String REVERSE_GEOCODING_RESOURCE = Constants.REVERSE_GEOCODING_RESOURCE;
-    private static final String API_KEY = Constants.API_KEY;
+    @Value("${geocoding.resource}")
+    private static String GEOCODING_RESOURCE;
+    @Value("{reverse.geocoding.resource}")
+    public static String REVERSE_GEOCODING_RESOURCE;
+    @Value("${api.key}")
+    private static String API_KEY;
 
-    public static String getGeocodeResponseFromQuery(String query) throws IOException, InterruptedException {
+    public static Geolocation getGeolocationFromCoordinates(Double latitude, Double longitude) {
+        try {
+            String geocode = getGeocodeResponseFromCoordinates(latitude, longitude);
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode responseJsonNode = mapper.readTree(geocode);
+            JsonNode items = responseJsonNode.get("items");
+
+            JsonNode address = items.get(0).get("address");
+            JsonNode position = items.get(0).get("position");
+
+            String label = Objects.isNull(address.get("label")) ? "" : address.get("label").asText();
+            String countryCode = Objects.isNull(address.get("countryCode")) ? "" : address.get("countryCode").asText();
+            String countryName = Objects.isNull(address.get("countryName")) ? "" : address.get("countryName").asText();
+            String county = Objects.isNull(address.get("county")) ? "" : address.get("county").asText();
+            String city = Objects.isNull(address.get("city")) ? "" : address.get("city").asText();
+            String district = Objects.isNull(address.get("district")) ? "" : address.get("district").asText();
+            String street = Objects.isNull(address.get("street")) ? "" : address.get("street").asText();
+            String houseNumber = Objects.isNull(address.get("houseNumber")) ? "" : address.get("houseNumber").asText();
+
+            return Geolocation.builder()
+                    .latitude(position.get("lat").asDouble())
+                    .longitude(position.get("lng").asDouble())
+                    .countryCode(countryCode)
+                    .countryName(countryName)
+                    .county(county)
+                    .city(city)
+                    .district(district)
+                    .street(street)
+                    .houseNumber(houseNumber)
+                    .description(label)
+                    .build();
+        } catch (IOException | InterruptedException e) {
+            log.error("Не удалось получить геолокацию по запросу", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String getGeocodeResponseFromQuery(String query) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
 
@@ -38,7 +84,7 @@ public class Geocoder {
         return geocodingResponse.body();
     }
 
-    public static String getGeocodeResponseFromCoordinates(Double latitude, Double longitude) throws IOException, InterruptedException {
+    private static String getGeocodeResponseFromCoordinates(Double latitude, Double longitude) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         String requestUri = REVERSE_GEOCODING_RESOURCE

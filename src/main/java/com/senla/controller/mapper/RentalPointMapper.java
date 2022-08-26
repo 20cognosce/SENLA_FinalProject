@@ -2,6 +2,7 @@ package com.senla.controller.mapper;
 
 import com.senla.controller.dto.RentalPointDto;
 import com.senla.controller.dto.ScooterDto;
+import com.senla.controller.dto.creation.RentalPointCreationDto;
 import com.senla.model.entity.RentalPoint;
 import com.senla.model.entity.Scooter;
 import org.modelmapper.Converter;
@@ -17,7 +18,7 @@ public class RentalPointMapper {
 
     private final ModelMapper modelMapper;
     private final Converter<List<Scooter>, List<ScooterDto>> scootersToScootersDtoConverter;
-    private final Converter<List<Scooter>, Integer> scootersToNumberOfScootersConverter = (src) -> src.getSource().size();
+    private final Converter<List<Scooter>, Integer> scootersToNumberOfScootersConverter;
 
     public RentalPointMapper(ModelMapper modelMapper, ScooterMapper scooterMapper) {
         this.modelMapper = modelMapper;
@@ -27,6 +28,10 @@ public class RentalPointMapper {
                 .stream()
                 .map(scooterMapper::convertToDto)
                 .collect(toList());
+
+        scootersToNumberOfScootersConverter = (src) -> src
+                .getSource()
+                .size();
 
         modelMapper.createTypeMap(RentalPoint.class, RentalPointDto.class)
                 .addMappings(mapper -> mapper
@@ -41,7 +46,7 @@ public class RentalPointMapper {
         return modelMapper.map(entity, RentalPointDto.class);
     }
 
-    public RentalPoint convertToRentalPoint(RentalPointDto dto) {
+    public RentalPoint convertToRentalPoint(RentalPointCreationDto dto) {
         return modelMapper.map(dto, RentalPoint.class);
     }
 }

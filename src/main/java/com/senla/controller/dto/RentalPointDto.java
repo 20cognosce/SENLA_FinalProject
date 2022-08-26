@@ -1,21 +1,22 @@
 package com.senla.controller.dto;
 
 import com.senla.model.entity.Geolocation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class RentalPointDto {
 
-    Long id;
-    Integer currentNumberOfScooters;
+    private Long id;
+    private Integer currentNumberOfScooters;
 
-    Geolocation geolocation;
+    private Geolocation geolocation;
+    private Double distanceToClientInKm;
 
-    List<ScooterDto> scooters;
+    private List<ScooterDto> scooters;
 }

@@ -1,17 +1,17 @@
 create table IF NOT EXISTS public.tariff
 (
     id               serial PRIMARY KEY,
-    name      varchar,
+    name             varchar,
     price_per_minute decimal(19, 4),
     description      varchar
 );
 
 create table IF NOT EXISTS public.subscription
 (
-    id                serial PRIMARY KEY,
-    name varchar,
-    price             decimal(19, 4),
-    description       varchar
+    id          serial PRIMARY KEY,
+    name        varchar,
+    price       decimal(19, 4),
+    description varchar
 );
 
 create table IF NOT EXISTS public.users
@@ -78,7 +78,7 @@ create table IF NOT EXISTS public.scooter_model
 create table IF NOT EXISTS public.scooter
 (
     id              serial PRIMARY KEY,
-    model_id        int references scooter_model (id),
+    model_id        int references scooter_model (id) not null,
     status          varchar(50),
     charge          decimal(7, 4), -- from -999.9999 to 999.9999, actual range is 0.0000 to 100.0000
     mileage         int,
@@ -99,6 +99,36 @@ create table IF NOT EXISTS public.ride
     ride_mileage          decimal(10, 4)
 );
 
+CREATE OR REPLACE FUNCTION calculate_distance_to_point(rental_point_id int, lat1 double precision, lng1 double precision)
+    RETURNS double precision
+    language plpgsql
+as
+$$
+declare
+        geo_id int;
+        lat2 decimal;
+        lng2 decimal;
+
+        equatorialEarthRadius decimal = 6371;
+        dLat decimal;
+        dLng decimal;
+        a decimal;
+        b decimal;
+begin
+        select geolocation_id into geo_id from rental_point where id = rental_point_id;
+        select geolocation.latitude into lat2 from geolocation where id = geo_id;
+        select geolocation.longitude into lng2 from geolocation where id = geo_id;
+
+        dLat = (lat2 - lat1) * PI() / 180d;
+        dLng = (lng2 - lng1) * PI() / 180d;
+        a = sin(dLat / 2) * sin(dLat / 2) + sin(dLng / 2) * sin(dLng / 2) * cos(lat1 * PI() / 180) * cos(lat2 * PI() / 180);
+        b = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+        return equatorialEarthRadius * b;
+end;
+$$;
+
+--select * from rental_point order by calculate_distance_to_point(rental_point_id := rental_point.id, lat1 := 59.9, lng1 := 30.3);
 
 /*
 DROP SCHEMA public CASCADE;
@@ -110,3 +140,7 @@ GRANT ALL ON SCHEMA public TO public;
 /*
 Ctrl + Alt + L - reformat code
 */
+
+/*If the table primary keys go out of sync*/
+--SELECT setval(pg_get_serial_sequence('scooter', 'id'), (SELECT MAX(id) FROM scooter) + 1);
+--SELECT setval(pg_get_serial_sequence('rental_point', 'id'), (SELECT MAX(id) FROM rental_point) + 1);*/

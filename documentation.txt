@@ -1,3 +1,0 @@
-Default controller's endpoint - /v1/
-
-GET /v1/ - README.md
