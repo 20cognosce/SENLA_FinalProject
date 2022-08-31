@@ -1,6 +1,6 @@
 package com.senla.security;
 
-import com.senla.dao.UserDao;
+import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserDao userDao;
+    private final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return new UserDetailsImpl(userDao.getUserByLogin(login)
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь с логином " + login + " не найден")));
+        return new UserDetailsImpl(userService.getUserByLogin(login));
     }
 }

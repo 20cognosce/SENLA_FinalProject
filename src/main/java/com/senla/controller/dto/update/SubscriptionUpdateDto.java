@@ -4,16 +4,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
-public class UserUpdateDto {
+public class SubscriptionUpdateDto {
 
     private String name;
-    private String phone;
-    private LocalDate dateOfBirth;
-
-    private String creditCard; //TODO: encryption
+    private Double price;
+    private String description;
+    private List<Long> models;
 }

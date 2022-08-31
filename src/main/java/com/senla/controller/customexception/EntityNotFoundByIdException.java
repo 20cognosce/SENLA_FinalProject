@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class EntityNotFoundByIdException extends RuntimeException {
 
-    public <EntityClass> EntityNotFoundByIdException(Long id, EntityClass entityClass) {
-        super("Объект класса " + "\"" + entityClass + "\"" + " c id = " + id + " не найден.", new NoSuchElementException());
+    public <T> EntityNotFoundByIdException(Long id, Class<T> clazz) {
+        super("Объект класса " + "\"" + clazz.getName() + "\"" + " c id = " + id + " не найден.", new NoSuchElementException());
     }
 }

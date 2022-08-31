@@ -31,12 +31,11 @@ public class ScooterController {
 
     @GetMapping(value = "/{id}")
     public ScooterDto getById(@PathVariable("id") Long id) {
-        Scooter scooter = scooterService.getById(id)
-                .orElseThrow(() -> new EntityNotFoundByIdException(id, Scooter.class));
+        Scooter scooter = scooterService.getById(id);
         return scooterMapper.convertToDto(scooter);
     }
 
-    @PostMapping(value = "/new")
+    @PostMapping
     public void createScooter(@RequestBody ScooterCreationDto scooterCreationDto) {
         Scooter scooter = scooterMapper.convertToScooter(scooterCreationDto);
         scooterService.create(scooter);
@@ -49,8 +48,7 @@ public class ScooterController {
 
     @PatchMapping(value = "/{id}")
     public void updateScooter(@PathVariable("id") Long id, @RequestBody ScooterUpdateDto updateModel) {
-        Scooter scooter = scooterService.getById(id)
-                .orElseThrow(() -> new EntityNotFoundByIdException(id, Scooter.class));
+        Scooter scooter = scooterService.getById(id);
         scooterService.updateEntityFromDto(scooter, updateModel, Scooter.class);
         scooterService.update(scooter);
     }
@@ -67,7 +65,7 @@ public class ScooterController {
 
     @PatchMapping(value = "/{id}", params = {"rental-point-id"})
     public void updateScooterRentalPoint(@PathVariable("id") Long id,
-                                                      @RequestParam(value = "rental-point-id") Long rentalPointId) {
+                                         @RequestParam(value = "rental-point-id") Long rentalPointId) {
         //TODO: in other methods
         try {
             scooterService.updateScooterRentalPoint(id, rentalPointId);

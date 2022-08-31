@@ -2,6 +2,7 @@ package com.senla.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.collection.spi.PersistentCollection;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,15 +14,18 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 @Slf4j
+@EnableScheduling
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.senla")
 @Configuration
@@ -36,7 +40,7 @@ public class AppConfig {
             if (src instanceof PersistentCollection) {
                 return ((PersistentCollection) src).wasInitialized();
             }
-            return true;
+            return !Objects.isNull(src);
         });
 
         return modelMapper;

@@ -140,3 +140,22 @@ VALUES (1, 'OK', 82.0, 250.4, 1),
        (4, 'DISCHARGED', 4.8, 357, 9),
        (4, 'OK', 34.0, 652, 9);
 
+insert into tariff2model(id, tariff_id, model_id)
+VALUES (1, 1, 1),
+       (2, 1, 2),
+       (3, 2, 1),
+       (4, 2, 2),
+       (5, 2, 3),
+       (6, 2, 4);
+
+insert into subscription2model(id, subscription_id, model_id)
+VALUES (1, 1, 1),
+       (2, 1, 2),
+       (3, 2, 1),
+       (4, 2, 2),
+       (5, 2, 3),
+       (6, 2, 4),
+       (7, 3, 1),
+       (8, 3, 2),
+       (9, 3, 3),
+       (10, 3, 4);

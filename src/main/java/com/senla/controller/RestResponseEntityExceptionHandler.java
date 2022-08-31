@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 @Slf4j
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -22,13 +19,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         String responseBody = ex.getMessage();
-
-        //TODO: remove
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
-
         log.error(responseBody, ex);
-        return handleExceptionInternal(ex, sw.toString(), httpHeaders, HttpStatus.CONFLICT, req);
+        return handleExceptionInternal(ex, responseBody, httpHeaders, HttpStatus.CONFLICT, req);
     }
 }

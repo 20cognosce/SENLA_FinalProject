@@ -1,6 +1,5 @@
 package com.senla.controller;
 
-import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.controller.dto.RentalPointDto;
 import com.senla.controller.dto.creation.RentalPointCreationDto;
 import com.senla.controller.dto.selection.GeolocationSelectionDto;
@@ -132,7 +131,7 @@ public class RentalPointController {
      * </code>
      * @param rentalPointCreationDto DTO for creation RentalPoint
      */
-    @PostMapping(value = "/new")
+    @PostMapping
     public void createRentalPoint(@RequestBody RentalPointCreationDto rentalPointCreationDto) {
         RentalPoint rentalPoint = rentalPointMapper.convertToRentalPoint(rentalPointCreationDto);
         rentalPointService.create(rentalPoint);
@@ -150,7 +149,7 @@ public class RentalPointController {
      *             the label of the HERE api response's address. Recommend to set it for more accurate defining the
      *             location (e.g. mentioning the closest landmarks)
      */
-    @PostMapping(value = "/new", params = {"lat", "lng"})
+    @PostMapping(params = {"lat", "lng"})
     public void createRentalPoint(@RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
                                   @RequestParam(value = "desc", defaultValue = "", required = false) String desc) {
 
@@ -172,8 +171,7 @@ public class RentalPointController {
      */
     @PatchMapping(value = "/{id}")
     public void updateGeolocationOfRentalPoint(@PathVariable("id") Long id, @RequestBody GeolocationUpdateDto updateModel) {
-        RentalPoint rentalPoint = rentalPointService.getById(id)
-                .orElseThrow(() -> new EntityNotFoundByIdException(id, RentalPoint.class));
+        RentalPoint rentalPoint = rentalPointService.getById(id);
         rentalPointService.updateEntityFromDto(rentalPoint.getGeolocation(), updateModel, Geolocation.class);
         rentalPointService.update(rentalPoint);
     }

@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 public class ScooterServiceImpl extends AbstractServiceImpl<Scooter, ScooterDao> implements ScooterService {
@@ -27,10 +25,15 @@ public class ScooterServiceImpl extends AbstractServiceImpl<Scooter, ScooterDao>
         return scooterDao;
     }
 
+    @Override
+    protected Class<Scooter> getDefaultEntityClass() {
+        return Scooter.class;
+    }
+
     @Transactional
     @Override
     public void updateScooterModel(Long scooterId, Long modelId) {
-        Scooter scooter = getById(scooterId).orElseThrow(() -> new EntityNotFoundByIdException(scooterId, Scooter.class));
+        Scooter scooter = getById(scooterId);
         ScooterModel model = scooterModelDao.getById(modelId).orElseThrow(() -> new EntityNotFoundByIdException(modelId, ScooterModel.class));
         scooter.setModel(model);
         scooterDao.update(scooter);
@@ -39,14 +42,14 @@ public class ScooterServiceImpl extends AbstractServiceImpl<Scooter, ScooterDao>
     @Transactional
     @Override
     public void updateScooterRentalPoint(Long scooterId, Long rentalPointId) {
-        Scooter scooter = getById(scooterId).orElseThrow(() -> new EntityNotFoundByIdException(scooterId, Scooter.class));
+        Scooter scooter = getById(scooterId);
         RentalPoint rentalPoint = rentalPointDao.getById(rentalPointId).orElseThrow(() -> new EntityNotFoundByIdException(rentalPointId, RentalPoint.class));
         scooter.setRentalPoint(rentalPoint);
         scooterDao.update(scooter);
     }
 
     @Override
-    public Optional<ScooterModel> getScooterModelById(Long id) {
-        return scooterModelDao.getById(id);
+    public ScooterModel getScooterModelById(Long id) {
+        return scooterModelDao.getById(id).orElseThrow(() -> new EntityNotFoundByIdException(id, ScooterModel.class));
     }
 }

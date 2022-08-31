@@ -3,24 +3,23 @@ package com.senla.service.impl;
 import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.controller.dto.selection.SelectionDto;
 import com.senla.dao.AbstractDao;
-import com.senla.model.entity.RentalPoint;
 import com.senla.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NonUniqueResultException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implements AbstractService<T> {
 
     protected abstract D getDefaultDao();
+    protected abstract Class<T> getDefaultEntityClass();
 
     @Transactional
     @Override
@@ -36,13 +35,18 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
 
     @Transactional
     @Override
-    public void deleteById(Long id) {
-        getDefaultDao().delete(getDefaultDao().getById(id)
-                .orElseThrow(() -> new EntityNotFoundByIdException(id, RentalPoint.class)));
+    public void deleteById(Long id) throws EntityNotFoundByIdException {
+        try {
+            getDefaultDao().delete(getDefaultDao().getById(id)
+                    .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass())));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    public List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
                           String orderBy,
                           boolean ascending,
                           int limit) {
@@ -50,8 +54,14 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
     }
 
     @Override
-    public Optional<T> getById(Long id) {
-        return getDefaultDao().getById(id);
+    public T getById(Long id) throws EntityNotFoundByIdException {
+        try {
+            return getDefaultDao().getById(id)
+                    .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass()));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -62,9 +72,9 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
             try {
                 dtoField.setAccessible(true);
                 if (Objects.isNull(dtoField.get(dto))) {
-                    // Null-поля в DTO не записываются в оригинал,
-                    // чтобы в DTO можно было передать только 1 изменяемое поле,
-                    // а остальные приняли null по умолчанию
+                    // Null-fields in the DTO are not set to the original,
+                    // so that it will be able to send only 1 modified field to DTO
+                    // meanwhile others will be set to null by default
                     return;
                 }
                 Field originalField = original.getClass().getDeclaredField(dtoField.getName());

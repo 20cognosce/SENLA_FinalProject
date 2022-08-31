@@ -5,15 +5,10 @@ import com.senla.dao.GeolocationDao;
 import com.senla.dao.RentalPointDao;
 import com.senla.model.entity.Geolocation;
 import com.senla.model.entity.RentalPoint;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.Subscription;
-import com.senla.model.entity.Tariff;
-import com.senla.model.entity.User;
 import com.senla.service.RentalPointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.naming.ServiceUnavailableException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -27,21 +22,6 @@ public class RentalPointServiceImpl extends AbstractServiceImpl<RentalPoint, Ren
 
     private final RentalPointDao rentalPointDao;
     private final GeolocationDao geolocationDao;
-
-    @Override
-    public List<Scooter> getAllAvailableScooters(RentalPoint rentalPoint) {
-        return null;
-    }
-
-    @Override
-    public void rentTheScooter(Scooter scooter, User user, Tariff userTariff) throws ServiceUnavailableException {
-
-    }
-
-    @Override
-    public void rentTheScooter(Scooter scooter, User user, Subscription userSubscription) throws ServiceUnavailableException {
-
-    }
 
     @Override
     public RentalPoint getByIdWithScooters(Long id) throws EntityNotFoundByIdException {
@@ -85,5 +65,10 @@ public class RentalPointServiceImpl extends AbstractServiceImpl<RentalPoint, Ren
     @Override
     protected RentalPointDao getDefaultDao() {
         return rentalPointDao;
+    }
+
+    @Override
+    protected Class<RentalPoint> getDefaultEntityClass() {
+        return RentalPoint.class;
     }
 }

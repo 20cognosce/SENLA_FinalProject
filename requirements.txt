@@ -1,13 +1,16 @@
 1) Регистрации пользователей в системе (менеджеры и обычные пользователи).
-Выполнено: POST /v1/users - создание ROOT пользователя
-Выполнено: POST /v1/users/new {UserCreationDto}
-Выполнено: PATCH /v1/users/{id}?role=ROLE
-Выполнено: GET /v1/users/{id}
+Выполнено: POST /v1/users/ - создание ROOT пользователя
+Выполнено: POST /v1/users/ {UserCreationDto}
 Выполнено: GET /v1/users/ {UserSelectionDto}
+Выполнено: GET /v1/users/{id}
+Выполнено: GET /v1/users/my
 
 2) Редактирования личной информации пользователя.
-
-
+Выполнено: PATCH /v1/users/my
+Выполнено: PATCH /v1/users/my/credentials
+Выполнено: PATCH /v1/users/{id}
+Выполнено: PATCH /v1/users/{id}/credentials
+Выполнено: PATCH /v1/users/{id}?role=ROLE
 
 3) Иерархический список точек проката с географической привязкой.
 Пояснение от куратора: "Иерархическое имеется в виду страна Беларусь область гродненская город Гродно улица такая то
@@ -16,13 +19,13 @@
 Выполнено: GET /v1/rental-points?orderBy=str&asc=true&limit=x {GeolocationSelectionDto}
 
 4) Возможность добавления / удаления / редактирования самокатов и точек проката.
-Выполнено: POST /v1/rental-points/new?lat=59.93&lng=30.36&desc=Точка проката рядом с магазином KFC
-           POST /v1/rental-points/new {RentalPointCreationDto}
+Выполнено: POST /v1/rental-points/?lat=59.93&lng=30.36&desc=Точка проката рядом с магазином KFC
+           POST /v1/rental-points/ {RentalPointCreationDto}
            PATCH /v1/rental-points {GeolocationUpdateDto}
            DELETE /v1/rental-points/{id}
 
 Выполнено: GET /v1/scooters/{id}
-           POST /v1/scooters/new {ScooterCreationDto}
+           POST /v1/scooters/ {ScooterCreationDto}
            PATCH /v1/scooters/{id} {ScooterUpdateDto}
            PATCH /v1/scooters/{id}?model-id=x
            PATCH /v1/scooters/{id}?rental-point-id=x
@@ -32,9 +35,33 @@
 Выполнено: GET /v1/rental-points/{id}
 
 6) Тарификация использования самокатов (почасовая, абонементная, возможность назначить цену и/или скидку).
+/v1/
+Выполнено: @GetMapping("/tariffs/{id}")
+           @GetMapping("/tariffs")
+           @GetMapping("/subscriptions/{id}")
+           @GetMapping("/subscriptions")
+
+           @PatchMapping("/tariffs/{id}") {@RequestBody TariffUpdateDto updateDto}
+           @PatchMapping("/subscriptions/{id}") {@RequestBody SubscriptionUpdateDto updateDto}
+
 7) Возможность аренды самоката пользователем по часовому тарифу либо на абонементной основе.
+/v1/users/
+Выполнено: @PatchMapping(value = "/{id}/tariff", params = {"tariff-id"})
+           @PatchMapping(value = "/{id}/subscription", params = {"subscription-id"})
+           @PatchMapping(value = "/my/tariff", params = {"tariff-id"})
+           @PatchMapping(value = "/my/subscription", params = {"subscription-id"})
+/v1/rides/
+Выполнено: @PostMapping(value = "/my", params = {"scooter-id", "payment"})
+           @PutMapping(value = "/my/pending/{ride-id}")
+           @PutMapping(value = "/my/active/{ride-id}", params = {"rental-point-id"})
 
 8) Просмотр истории аренды конкретного самоката администратором (кто, когда, пробег и д.р.)
+/v1/rides/
+Выполнено: @GetMapping(params = {"scooter-id", "firstStartTime", "lastStartTime"})
+
 9) История аренды для клиента.
+/v1/rides/
+Выполнено: @GetMapping(value = "/my/{status}", params = {"limit"})
+           @GetMapping(params = {"user-id", "limit"})
 
 

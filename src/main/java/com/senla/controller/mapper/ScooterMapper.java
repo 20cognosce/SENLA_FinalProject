@@ -1,6 +1,5 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.controller.dto.ScooterDto;
 import com.senla.controller.dto.ScooterModelDto;
 import com.senla.controller.dto.creation.ScooterCreationDto;
@@ -28,8 +27,7 @@ public class ScooterMapper {
 
         scooterIdToScooterModelConverter = (src) -> {
             Long id = src.getSource();
-            return scooterService.getScooterModelById(id)
-                    .orElseThrow(() -> new EntityNotFoundByIdException(id, ScooterModel.class));
+            return scooterService.getScooterModelById(id);
         };
 
         modelMapper.createTypeMap(Scooter.class, ScooterDto.class)

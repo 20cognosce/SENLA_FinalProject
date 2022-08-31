@@ -5,7 +5,7 @@ import com.senla.controller.dto.creation.UserCreationDto;
 import com.senla.model.entity.User;
 import com.senla.model.entityenum.Role;
 import com.senla.model.entityenum.UserAccountStatus;
-import com.senla.service.PaymentService;
+import com.senla.service.TariffService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +17,7 @@ public class UserMapper {
     private final ModelMapper modelMapper;
     private final Converter<String, String> passwordToHashcodeConverter;
 
-    public UserMapper(ModelMapper modelMapper, PasswordEncoder passwordEncoder, PaymentService paymentService) {
+    public UserMapper(ModelMapper modelMapper, PasswordEncoder passwordEncoder, TariffService tariffService) {
         this.modelMapper = modelMapper;
 
         passwordToHashcodeConverter = (src) -> passwordEncoder.encode(src.getSource());
@@ -27,7 +27,7 @@ public class UserMapper {
                         .using(passwordToHashcodeConverter)
                         .map(UserCreationDto::getPassword, User::setHashPassword))
                 .addMappings(mapper -> mapper
-                        .map((userCreationDto) -> paymentService.getTariffById(1L), User::setTariff))
+                        .map((userCreationDto) -> tariffService.getById(1L), User::setTariff))
                 .addMappings(mapper -> mapper
                         .map((userCreationDto) -> Role.USER, User::setRole))
                 .addMappings(mapper -> mapper

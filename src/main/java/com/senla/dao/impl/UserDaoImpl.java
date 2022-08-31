@@ -4,8 +4,11 @@ import com.senla.dao.UserDao;
 import com.senla.model.entity.User;
 import com.senla.model.entityenum.Role;
 import com.senla.model.entityenum.UserAccountStatus;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
@@ -28,10 +32,10 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public List<User> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                          String orderBy,
-                          boolean asc,
-                          int limit) {
+    public List<User> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+                             String orderBy,
+                             boolean asc,
+                             int limit) {
         mapOfFieldNamesAndValuesToSelectBy.put("status", UserAccountStatus.ACTIVE);
         return super.getAll(mapOfFieldNamesAndValuesToSelectBy, orderBy, asc, limit);
     }
@@ -45,7 +49,14 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                 .select(user)
                 .where(cb.equal(user.get("login"), login)));
 
-        return Optional.ofNullable(q.getSingleResult());
+        User result = null;
+        try {
+            result = q.getSingleResult();
+        } catch (NoResultException e) {
+            log.info("User with login " + login + " not found, empty optional returned", e);
+        }
+
+        return Optional.ofNullable(result);
     }
 
     @Override
@@ -57,7 +68,14 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                 .select(user)
                 .where(cb.equal(user.get("phone"), phone)));
 
-        return Optional.ofNullable(q.getSingleResult());
+        User result = null;
+        try {
+            result = q.getSingleResult();
+        } catch (NoResultException e) {
+            log.info("User with phone " + phone + " not found, empty optional returned", e);
+        }
+
+        return Optional.ofNullable(result);
     }
 
     @Override

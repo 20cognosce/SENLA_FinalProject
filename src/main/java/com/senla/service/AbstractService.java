@@ -1,11 +1,12 @@
 package com.senla.service;
 
+import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.controller.dto.selection.SelectionDto;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.NonUniqueResultException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface AbstractService<T> {
 
@@ -13,14 +14,14 @@ public interface AbstractService<T> {
 
     void update(T element);
 
-    void deleteById(Long id);
+    void deleteById(Long id) throws EntityNotFoundByIdException;
 
-    List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
                    String orderBy,
                    boolean asc,
                    int limit);
 
-    Optional<T> getById(Long id);
+    T getById(Long id) throws EntityNotFoundByIdException;
 
     /**
      * Takes a detached original entity object and updates it fields according to DTO values.

@@ -2,6 +2,7 @@ package com.senla.dao.impl;
 
 import com.senla.dao.AbstractDao;
 import org.hibernate.query.criteria.internal.OrderImpl;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,7 +45,12 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public List<T> getAll(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    public void refresh(T element) {
+        entityManager.refresh(element);
+    }
+
+    @Override
+    public List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
                           String orderBy,
                           boolean asc,
                           int limit) {

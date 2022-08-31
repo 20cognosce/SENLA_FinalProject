@@ -81,8 +81,22 @@ create table IF NOT EXISTS public.scooter
     model_id        int references scooter_model (id) not null,
     status          varchar(50),
     charge          decimal(7, 4), -- from -999.9999 to 999.9999, actual range is 0.0000 to 100.0000
-    mileage         int,
+    mileage         decimal(10, 4),
     rental_point_id int references rental_point (id)
+);
+
+create table IF NOT EXISTS public.tariff2model
+(
+    id        serial PRIMARY KEY,
+    tariff_id int references tariff (id)        not null,
+    model_id  int references scooter_model (id) not null
+);
+
+create table IF NOT EXISTS public.subscription2model
+(
+    id              serial PRIMARY KEY,
+    subscription_id int references subscription (id)  not null,
+    model_id        int references scooter_model (id) not null
 );
 
 create table IF NOT EXISTS public.ride
@@ -91,9 +105,11 @@ create table IF NOT EXISTS public.ride
     user_id               int references users (id),
     scooter_id            int references scooter (id),
     status                varchar(50),
-    price                 decimal(19, 4),
+    price_total           decimal(19, 4),
+    price_per_minute      decimal(19, 4),
     start_rental_point_id int references rental_point (id),
     end_rental_point_id   int references rental_point (id),
+    creation_timestamp    timestamp,
     start_timestamp       timestamp,
     end_timestamp         timestamp,
     ride_mileage          decimal(10, 4)
@@ -105,30 +121,30 @@ CREATE OR REPLACE FUNCTION calculate_distance_to_point(rental_point_id int, lat1
 as
 $$
 declare
-        geo_id int;
-        lat2 decimal;
-        lng2 decimal;
-
-        equatorialEarthRadius decimal = 6371;
-        dLat decimal;
-        dLng decimal;
-        a decimal;
-        b decimal;
+    geo_id                int;
+    lat2                  decimal;
+    lng2                  decimal;
+    equatorialEarthRadius decimal = 6371;
+    dLat                  decimal;
+    dLng                  decimal;
+    a                     decimal;
+    b                     decimal;
 begin
-        select geolocation_id into geo_id from rental_point where id = rental_point_id;
-        select geolocation.latitude into lat2 from geolocation where id = geo_id;
-        select geolocation.longitude into lng2 from geolocation where id = geo_id;
+    select geolocation_id into geo_id from rental_point where id = rental_point_id;
+    select geolocation.latitude into lat2 from geolocation where id = geo_id;
+    select geolocation.longitude into lng2 from geolocation where id = geo_id;
 
-        dLat = (lat2 - lat1) * PI() / 180d;
-        dLng = (lng2 - lng1) * PI() / 180d;
-        a = sin(dLat / 2) * sin(dLat / 2) + sin(dLng / 2) * sin(dLng / 2) * cos(lat1 * PI() / 180) * cos(lat2 * PI() / 180);
-        b = 2 * atan2(sqrt(a), sqrt(1 - a));
+    dLat = (lat2 - lat1) * PI() / 180 d;
+    dLng = (lng2 - lng1) * PI() / 180 d;
+    a = sin(dLat / 2) * sin(dLat / 2) + sin(dLng / 2) * sin(dLng / 2) * cos(lat1 * PI() / 180) * cos(lat2 * PI() / 180);
+    b = 2 * atan2(sqrt(a), sqrt(1 - a));
 
-        return equatorialEarthRadius * b;
+    return equatorialEarthRadius * b;
 end;
 $$;
 
 --select * from rental_point order by calculate_distance_to_point(rental_point_id := rental_point.id, lat1 := 59.9, lng1 := 30.3);
+
 
 /*
 DROP SCHEMA public CASCADE;
@@ -137,10 +153,11 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
 */
 
+
 /*
 Ctrl + Alt + L - reformat code
 */
 
 /*If the table primary keys go out of sync*/
---SELECT setval(pg_get_serial_sequence('scooter', 'id'), (SELECT MAX(id) FROM scooter) + 1);
---SELECT setval(pg_get_serial_sequence('rental_point', 'id'), (SELECT MAX(id) FROM rental_point) + 1);*/
+-- SELECT setval(pg_get_serial_sequence('subscription2model', 'id'), (SELECT MAX(id) FROM subscription2model) + 1);
+-- SELECT setval(pg_get_serial_sequence('tariff2model', 'id'), (SELECT MAX(id) FROM tariff2model) + 1);
