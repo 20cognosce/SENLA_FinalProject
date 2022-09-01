@@ -2,7 +2,6 @@ package com.senla.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.collection.spi.PersistentCollection;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

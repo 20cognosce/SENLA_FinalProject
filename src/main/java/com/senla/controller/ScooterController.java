@@ -1,6 +1,5 @@
 package com.senla.controller;
 
-import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.controller.dto.ScooterDto;
 import com.senla.controller.dto.creation.ScooterCreationDto;
 import com.senla.controller.dto.update.ScooterUpdateDto;
@@ -41,37 +40,26 @@ public class ScooterController {
         scooterService.create(scooter);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deleteScooter(@PathVariable("id") Long id) {
-        scooterService.deleteById(id);
-    }
-
     @PatchMapping(value = "/{id}")
-    public void updateScooter(@PathVariable("id") Long id, @RequestBody ScooterUpdateDto updateModel) {
+    public void updateScooter(@PathVariable("id") Long id, @RequestBody ScooterUpdateDto updateDto) {
         Scooter scooter = scooterService.getById(id);
-        scooterService.updateEntityFromDto(scooter, updateModel, Scooter.class);
+        scooterService.updateEntityFromDto(scooter, updateDto, Scooter.class);
         scooterService.update(scooter);
     }
 
     @PatchMapping(value = "/{id}", params = {"model-id"})
     public void updateScooterModel(@PathVariable("id") Long id, @RequestParam(value = "model-id") Long modelId) {
-        try {
-            scooterService.updateScooterModel(id, modelId);
-        } catch (EntityNotFoundByIdException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+        scooterService.updateScooterModel(id, modelId);
     }
 
     @PatchMapping(value = "/{id}", params = {"rental-point-id"})
     public void updateScooterRentalPoint(@PathVariable("id") Long id,
                                          @RequestParam(value = "rental-point-id") Long rentalPointId) {
-        //TODO: in other methods
-        try {
-            scooterService.updateScooterRentalPoint(id, rentalPointId);
-        } catch (EntityNotFoundByIdException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+        scooterService.updateScooterRentalPoint(id, rentalPointId);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void deleteScooter(@PathVariable("id") Long id) {
+        scooterService.deleteById(id);
     }
 }

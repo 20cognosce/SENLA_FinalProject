@@ -14,6 +14,4 @@ public class UserUpdateDto {
     private String name;
     private String phone;
     private LocalDate dateOfBirth;
-
-    private String creditCard; //TODO: encryption
 }

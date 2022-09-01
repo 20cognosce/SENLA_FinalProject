@@ -1,67 +1,112 @@
 1) Регистрации пользователей в системе (менеджеры и обычные пользователи).
-Выполнено: POST /v1/users/ - создание ROOT пользователя
-Выполнено: POST /v1/users/ {UserCreationDto}
-Выполнено: GET /v1/users/ {UserSelectionDto}
-Выполнено: GET /v1/users/{id}
-Выполнено: GET /v1/users/my
+/v1/users/
+Выполнено: @PostMapping("/root") public void createRootUser() - создание ROOT пользователя
+           @PostMapping public void createUser(@RequestBody UserCreationDto userCreationDto)
+
+           @GetMapping public List<UserDto> getAll(@RequestBody(required = false) UserSelectionDto selectionModel,
+               @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
+               @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
+           @GetMapping(value = "/{id}") public UserDto getById(@PathVariable("id") Long id)
+           @GetMapping(value = "/my") public UserDto getUserByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails)
 
 2) Редактирования личной информации пользователя.
-Выполнено: PATCH /v1/users/my
-Выполнено: PATCH /v1/users/my/credentials
-Выполнено: PATCH /v1/users/{id}
-Выполнено: PATCH /v1/users/{id}/credentials
-Выполнено: PATCH /v1/users/{id}?role=ROLE
+/v1/users/
+Выполнено: @PatchMapping(value = "/{id}", params = {"role"}) public void updateUserRoleById(@PathVariable("id") Long id,
+               @RequestParam(value = "role") String role)
+           @PatchMapping(value = "/{id}") public void updateUserById(@PathVariable("id") Long id,
+               @RequestBody UserUpdateDto userUpdateDto)
+           @PatchMapping(value = "/my") public void updateUserByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
+               @RequestBody UserUpdateDto userUpdateDto)
+
+           @PatchMapping(value = "/{id}/credentials") public void updateUserCredentialsById(@PathVariable Long id,
+               @RequestBody UserCredentialsUpdateDto credentialsUpdateDto)
+           @PatchMapping(value = "/{id}/tariff", params = {"tariff-id"}) public void updateUserTariffById(@PathVariable Long id,
+               @RequestParam(value = "tariff-id") Long tariffId)
+           @PatchMapping(value = "/{id}/subscription", params = {"subscription-id"}) public void updateUserSubscriptionById(@PathVariable Long id,
+               @RequestParam(value = "subscription-id") Long subscriptionId)
+           @PatchMapping(value = "/my/credentials") public void updateUserCredentialsByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
+               @RequestBody UserCredentialsUpdateDto credentialsUpdateDto)
+           @PatchMapping(value = "/my/tariff", params = {"tariff-id"}) public void updateUserTariffByAuth(
+               @AuthenticationPrincipal UserDetailsImpl userDetails,
+               @RequestParam(value = "tariff-id") Long tariffId)
+           @PatchMapping(value = "/my/subscription", params = {"subscription-id"}) public void updateUserSubscriptionByAuth(
+               @AuthenticationPrincipal UserDetailsImpl userDetails,
+               @RequestParam(value = "subscription-id") Long subscriptionId)
 
 3) Иерархический список точек проката с географической привязкой.
-Пояснение от куратора: "Иерархическое имеется в виду страна Беларусь область гродненская город Гродно улица такая то
-Короч чтоб можно было спускаться от Беларуси до улицы"
-Выполнено: GET /v1/rental-points?lat=x&lng=y&limit=z
-Выполнено: GET /v1/rental-points?orderBy=str&asc=true&limit=x {GeolocationSelectionDto}
+Пояснение от куратора: "Иерархическое имеется в виду страна Беларусь, область Гродненская, город Гродно, улица такая-то.
+Короче чтобы можно было спускаться от Беларуси до улицы."
+/v1/rental-points
+Выполнено: @GetMapping public List<RentalPointDto> getAll(@RequestBody(required = false) GeolocationSelectionDto selectionModel,
+               @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
+               @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit
+           @GetMapping(params = {"lat", "lng"}) public List<RentalPointDto> getAll(
+               @RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
+               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit
 
 4) Возможность добавления / удаления / редактирования самокатов и точек проката.
-Выполнено: POST /v1/rental-points/?lat=59.93&lng=30.36&desc=Точка проката рядом с магазином KFC
-           POST /v1/rental-points/ {RentalPointCreationDto}
-           PATCH /v1/rental-points {GeolocationUpdateDto}
-           DELETE /v1/rental-points/{id}
+/v1/rental-points
+Выполнено: @PostMapping public void createRentalPoint(@RequestBody RentalPointCreationDto rentalPointCreationDto)
+           @PostMapping(params = {"lat", "lng"}) public void createRentalPoint(
+                @RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
+                @RequestParam(value = "desc", defaultValue = "", required = false) String desc)
+           @PatchMapping(value = "/{id}") public void updateGeolocationOfRentalPoint(@PathVariable("id") Long id,
+                @RequestBody GeolocationUpdateDto updateModel)
+           @DeleteMapping(value = "/{id}") public void deleteRentalPoint(@PathVariable("id") Long id)
 
-Выполнено: GET /v1/scooters/{id}
-           POST /v1/scooters/ {ScooterCreationDto}
-           PATCH /v1/scooters/{id} {ScooterUpdateDto}
-           PATCH /v1/scooters/{id}?model-id=x
-           PATCH /v1/scooters/{id}?rental-point-id=x
-           DELETE /v1/scooters/{id}
+/v1/scooters
+Выполнено: @GetMapping(value = "/{id}") public ScooterDto getById(@PathVariable("id") Long id)
+           @PostMapping public void createScooter(@RequestBody ScooterCreationDto scooterCreationDto)
+           @PatchMapping(value = "/{id}") public void updateScooter(@PathVariable("id") Long id, @RequestBody ScooterUpdateDto updateDto)
+           @PatchMapping(value = "/{id}", params = {"model-id"}) public void updateScooterModel(@PathVariable("id") Long id,
+               @RequestParam(value = "model-id") Long modelId)
+           @PatchMapping(value = "/{id}", params = {"rental-point-id"}) public void updateScooterRentalPoint(@PathVariable("id") Long id,
+               @RequestParam(value = "rental-point-id") Long rentalPointId)
+           @DeleteMapping(value = "/{id}") public void deleteScooter(@PathVariable("id") Long id)
 
 5) Просмотр детальной информации о точке проката (наличие самокатов, т.е. их количество и модельный ряд, их состояние).
-Выполнено: GET /v1/rental-points/{id}
+/v1/rental-points
+Выполнено: @GetMapping(value = "/{id}") public RentalPointDto getById(@PathVariable("id") Long id)
 
 6) Тарификация использования самокатов (почасовая, абонементная, возможность назначить цену и/или скидку).
-/v1/
-Выполнено: @GetMapping("/tariffs/{id}")
-           @GetMapping("/tariffs")
-           @GetMapping("/subscriptions/{id}")
-           @GetMapping("/subscriptions")
+/v1/tariffs
+Выполнено: @GetMapping("/{id}") public TariffDto getTariffById(@PathVariable Long id)
+           @GetMapping public List<TariffDto> getAllTariffs()
+           @PostMapping public void createTariff(@RequestBody TariffCreationDto creationDto)
+           @PatchMapping("/{id}") public void updateTariff(@PathVariable Long id, @RequestBody TariffUpdateDto updateDto)
 
-           @PatchMapping("/tariffs/{id}") {@RequestBody TariffUpdateDto updateDto}
-           @PatchMapping("/subscriptions/{id}") {@RequestBody SubscriptionUpdateDto updateDto}
+/v1/subscriptions
+Выполнено: @GetMapping("/{id}") public SubscriptionDto getSubscriptionById(@PathVariable Long id)
+           @GetMapping public List<SubscriptionDto> getAllSubscription()
+           @PostMapping public void createSubscription(@RequestBody SubscriptionCreationDto creationDto)
+           @PatchMapping("/{id}") public void updateModelsForSubscription(@PathVariable Long id, @RequestBody SubscriptionUpdateDto updateDto)
 
 7) Возможность аренды самоката пользователем по часовому тарифу либо на абонементной основе.
-/v1/users/
-Выполнено: @PatchMapping(value = "/{id}/tariff", params = {"tariff-id"})
-           @PatchMapping(value = "/{id}/subscription", params = {"subscription-id"})
-           @PatchMapping(value = "/my/tariff", params = {"tariff-id"})
-           @PatchMapping(value = "/my/subscription", params = {"subscription-id"})
 /v1/rides/
-Выполнено: @PostMapping(value = "/my", params = {"scooter-id", "payment"})
-           @PutMapping(value = "/my/pending/{ride-id}")
-           @PutMapping(value = "/my/active/{ride-id}", params = {"rental-point-id"})
+Выполнено: @PostMapping(value = "/my", params = {"scooter-id", "payment"}) public RideDto createRide(
+               @AuthenticationPrincipal UserDetailsImpl userDetails,
+               @RequestParam("scooter-id") Long scooterId, @RequestParam("payment") String payment)
+           @PutMapping(value = "/my/pending/{ride-id}") public void startRide(
+               @AuthenticationPrincipal UserDetailsImpl userDetails,
+               @PathVariable("ride-id") Long rideId)
+           @PutMapping(value = "/my/active/{ride-id}", params = {"rental-point-id", "mileage", "charge"}) public void endRide(
+               @AuthenticationPrincipal UserDetailsImpl userDetails,
+               @PathVariable("ride-id") Long rideId,
+               @RequestParam("rental-point-id") Long rentalPointId, @RequestParam("mileage") Double mileage, @RequestParam("charge") Double charge)
 
 8) Просмотр истории аренды конкретного самоката администратором (кто, когда, пробег и д.р.)
 /v1/rides/
-Выполнено: @GetMapping(params = {"scooter-id", "firstStartTime", "lastStartTime"})
+Выполнено: @GetMapping(params = {"scooter-id"}) public List<RideDto> getScooterRidesById(@RequestParam("scooter-id") Long scooterId,
+               @RequestParam(value = "firstStartTime", defaultValue = "first", required = false) LocalDateTime firstStartTime,
+               @RequestParam(value = "lastStartTime", defaultValue = "last", required = false) LocalDateTime lastStartTime)
+           @GetMapping(params = {"user-id", "status"}) public List<RideDto> getUserRidesById(@RequestParam("user-id") Long userId,
+               @RequestParam("status") String status,
+               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
 
 9) История аренды для клиента.
 /v1/rides/
-Выполнено: @GetMapping(value = "/my/{status}", params = {"limit"})
-           @GetMapping(params = {"user-id", "limit"})
-
-
+Выполнено: @GetMapping("my/{status}") public List<RideDto> getRidesByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
+               @PathVariable("status") String status,
+               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)

@@ -5,7 +5,6 @@ import com.senla.model.entity.Ride;
 import com.senla.model.entity.Scooter;
 import com.senla.model.entity.User;
 import com.senla.model.entityenum.RideStatus;
-import org.springframework.lang.Nullable;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

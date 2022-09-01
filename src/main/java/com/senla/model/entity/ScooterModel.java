@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -53,14 +50,4 @@ public class ScooterModel {
     @JsonIgnore
     @OneToMany(mappedBy = "model", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     List<Scooter> scooters;
-
-    @JsonIgnore
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(mappedBy = "models")
-    List<Tariff> tariffs;
-
-    @JsonIgnore
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(mappedBy = "models")
-    List<Subscription> subscriptions;
 }

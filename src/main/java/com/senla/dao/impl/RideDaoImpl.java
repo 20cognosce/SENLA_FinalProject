@@ -6,7 +6,6 @@ import com.senla.model.entity.Scooter;
 import com.senla.model.entity.User;
 import com.senla.model.entityenum.RideStatus;
 import org.hibernate.query.criteria.internal.OrderImpl;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;

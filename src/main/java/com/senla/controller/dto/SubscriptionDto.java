@@ -1,9 +1,21 @@
 package com.senla.controller.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
-//TODO
+@Setter
+@Getter
+@NoArgsConstructor
 public class SubscriptionDto {
 
-    List<ScooterModelDto> models;
+    private Long id;
+    private String name;
+    private Double price;
+
+    private String description;
+
+    private List<ScooterModelDto> models;
 }

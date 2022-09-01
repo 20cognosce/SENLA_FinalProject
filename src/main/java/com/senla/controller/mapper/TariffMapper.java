@@ -1,5 +1,7 @@
 package com.senla.controller.mapper;
 
+import com.senla.controller.dto.ScooterModelDto;
+import com.senla.controller.dto.TariffDto;
 import com.senla.controller.dto.creation.TariffCreationDto;
 import com.senla.controller.dto.update.TariffUpdateDto;
 import com.senla.model.entity.ScooterModel;
@@ -18,13 +20,19 @@ public class TariffMapper {
 
     private final ModelMapper modelMapper;
 
-    public TariffMapper(ModelMapper modelMapper, ScooterService scooterService) {
+    public TariffMapper(ModelMapper modelMapper, ScooterService scooterService, ScooterModelMapper scooterModelMapper) {
         this.modelMapper = modelMapper;
 
         Converter<List<Long>, List<ScooterModel>> modelsIdToModelsConverter = (src) -> src
                 .getSource()
                 .stream()
                 .map(scooterService::getScooterModelById)
+                .collect(toList());
+
+        Converter<List<ScooterModel>, List<ScooterModelDto>> modelsToDtoConverter = (src) -> src
+                .getSource()
+                .stream()
+                .map(scooterModelMapper::convertToDto)
                 .collect(toList());
 
         modelMapper.createTypeMap(TariffCreationDto.class, Tariff.class)
@@ -36,6 +44,11 @@ public class TariffMapper {
                 .addMappings(mapper -> mapper
                         .using(modelsIdToModelsConverter)
                         .map(TariffUpdateDto::getModels, Tariff::setModels));
+
+        modelMapper.createTypeMap(Tariff.class, TariffDto.class)
+                .addMappings(mapper -> mapper
+                        .using(modelsToDtoConverter)
+                        .map(Tariff::getModels, TariffDto::setModels));
     }
 
     public Tariff convertToTariff(TariffCreationDto creationDto) {
@@ -44,5 +57,9 @@ public class TariffMapper {
 
     public Tariff convertToTariff(TariffUpdateDto updateDto) {
         return modelMapper.map(updateDto, Tariff.class);
+    }
+
+    public TariffDto convertToDto(Tariff tariff) {
+        return modelMapper.map(tariff, TariffDto.class);
     }
 }

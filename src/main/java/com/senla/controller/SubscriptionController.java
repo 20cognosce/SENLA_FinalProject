@@ -1,5 +1,7 @@
 package com.senla.controller;
 
+import com.senla.controller.dto.SubscriptionDto;
+import com.senla.controller.dto.creation.SubscriptionCreationDto;
 import com.senla.controller.dto.update.SubscriptionUpdateDto;
 import com.senla.controller.mapper.SubscriptionMapper;
 import com.senla.model.entity.Subscription;
@@ -9,12 +11,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/subscriptions", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,13 +30,20 @@ public class SubscriptionController {
     private final SubscriptionMapper subscriptionMapper;
 
     @GetMapping("/{id}")
-    public Subscription getSubscriptionById(@PathVariable Long id) {
-        return subscriptionService.getById(id);
+    public SubscriptionDto getSubscriptionById(@PathVariable Long id) {
+        return subscriptionMapper.convertToSubscriptionDto(subscriptionService.getById(id));
     }
 
     @GetMapping
-    public List<Subscription> getAllSubscription() {
-        return subscriptionService.getAll(new HashMap<>(), "id", true, 10);
+    public List<SubscriptionDto> getAllSubscription() {
+        return subscriptionService.getAll(new HashMap<>(), "id", true, 100)
+                .stream().map(subscriptionMapper::convertToSubscriptionDto).collect(toList());
+    }
+
+    @PostMapping
+    public void createSubscription(@RequestBody SubscriptionCreationDto creationDto) {
+        Subscription subscription = subscriptionMapper.convertToSubscription(creationDto);
+        subscriptionService.create(subscription);
     }
 
     @PatchMapping("/{id}")

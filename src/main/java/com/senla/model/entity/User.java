@@ -54,9 +54,6 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "credit_card")
-    private String creditCard; //TODO: encryption
-
     @JoinColumn(name = "tariff_id")
     @ManyToOne
     private Tariff tariff;

@@ -1,6 +1,5 @@
 package com.senla.controller.dto;
 
-import com.senla.model.entity.RentalPoint;
 import com.senla.model.entityenum.RideStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

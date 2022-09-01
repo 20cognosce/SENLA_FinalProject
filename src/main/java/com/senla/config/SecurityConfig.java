@@ -58,13 +58,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.POST, "/v1/users/root", "/v1/users").permitAll()
                 .antMatchers("/v1/users/my/**").authenticated()
-                .antMatchers(HttpMethod.GET, "/v1/users/{id}/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
                 .antMatchers(HttpMethod.PATCH, "/v1/users/{id}/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-                .antMatchers("/v1/users/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
 
-                //.antMatchers(HttpMethod.GET, "/v1/rides/my/**").authenticated()
-                /*.antMatchers(HttpMethod.POST, "/v1/rides").authenticated()
-                .antMatchers("/v1/rides/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())*/
+                .antMatchers(HttpMethod.GET, "/v1/tariffs/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+
+                .antMatchers(HttpMethod.GET, "/v1/subscriptions/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+
+                .antMatchers("/v1/rides/my/**").authenticated()
+                .antMatchers("/v1/rides/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
 
                 .and()
                 .httpBasic();

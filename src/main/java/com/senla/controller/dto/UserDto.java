@@ -1,7 +1,5 @@
 package com.senla.controller.dto;
 
-import com.senla.model.entity.Tariff;
-import com.senla.model.entity.User2Subscription;
 import com.senla.model.entityenum.Role;
 import com.senla.model.entityenum.UserAccountStatus;
 import lombok.Getter;
@@ -23,6 +21,6 @@ public class UserDto {
     private String phone;
     private LocalDate dateOfBirth;
 
-    private Tariff tariff;
-    private User2Subscription user2Subscription;
+    private TariffDto tariff;
+    private User2SubscriptionDto user2Subscription;
 }

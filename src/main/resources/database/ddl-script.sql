@@ -26,7 +26,6 @@ create table IF NOT EXISTS public.users
     phone         varchar UNIQUE,
     date_of_birth date,
 
-    credit_card   varchar(50),
     tariff_id     int references tariff (id) default 1
 );
 
@@ -144,7 +143,6 @@ end;
 $$;
 
 --select * from rental_point order by calculate_distance_to_point(rental_point_id := rental_point.id, lat1 := 59.9, lng1 := 30.3);
-
 
 /*
 DROP SCHEMA public CASCADE;
