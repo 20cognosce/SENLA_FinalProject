@@ -5,8 +5,10 @@ import com.senla.model.entity.Ride;
 import com.senla.model.entity.Scooter;
 import com.senla.model.entity.User;
 import com.senla.model.entityenum.RideStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Repository
 public class RideDaoImpl extends AbstractDaoImpl<Ride> implements RideDao {
 
@@ -93,15 +96,20 @@ public class RideDaoImpl extends AbstractDaoImpl<Ride> implements RideDao {
         return q.getResultList();
     }
 
+    @Transactional
     @Override
-    public void deletePendingRides(Duration minTimePending) {
+    public void deletePendingRidesOfTheUser(Duration minPendingRideLifetime, User user) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaDelete<Ride> cq = cb.createCriteriaDelete(Ride.class);
         Root<Ride> root = cq.from(Ride.class);
 
-        Predicate predicateForOverdue = cb.lessThan(root.get("creationTimestamp"), LocalDateTime.now().minus(minTimePending));
+        Predicate predicateForUser = cb.equal(root.get("user"), user);
         Predicate predicateForPending = cb.equal(root.get("status"), RideStatus.PENDING);
+        Predicate predicateForOverdue = cb.lessThan(root.get("creationTimestamp"), LocalDateTime.now().minus(minPendingRideLifetime));
 
-        entityManager.createQuery(cq.where(cb.and(predicateForOverdue, predicateForPending))).executeUpdate();
+        entityManager.createQuery(
+                cq.where(
+                        cb.and(predicateForOverdue, cb.and(predicateForUser, predicateForPending))))
+                .executeUpdate();
     }
 }

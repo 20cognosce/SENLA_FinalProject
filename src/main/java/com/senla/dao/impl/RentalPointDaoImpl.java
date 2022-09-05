@@ -25,12 +25,6 @@ public class RentalPointDaoImpl extends AbstractDaoImpl<RentalPoint> implements 
 
     @Override
     public List<RentalPoint> getAllTheClosest(double latitude, double longitude, int limit) {
-        /*TypedQuery<RentalPoint> q = entityManager.createQuery("SELECT r FROM RentalPoint r " +
-                "order by function('calculate_distance_to_point', r, :latitude, :longitude) asc", RentalPoint.class);
-        q.setParameter("latitude", latitude);
-        q.setParameter("longitude", longitude);
-        return q.getResultList();*/
-
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<RentalPoint> cq = cb.createQuery(RentalPoint.class);
         Root<RentalPoint> root = cq.from(RentalPoint.class);

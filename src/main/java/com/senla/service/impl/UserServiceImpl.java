@@ -31,22 +31,12 @@ public class UserServiceImpl extends AbstractServiceImpl<User, UserDao> implemen
     }
 
     @Override
-    protected UserDao getDefaultDao() {
-        return userDao;
-    }
-
-    @Override
-    protected Class<User> getDefaultEntityClass() {
-        return User.class;
-    }
-
-    @Override
     public boolean isRootCreated() {
         return getDefaultDao().isRootCreated();
     }
 
     @Override
-    public User getUserByLogin(String login) throws UsernameNotFoundException {
+    public User getUserByLogin(@NonNull String login) throws UsernameNotFoundException {
         return getDefaultDao().getUserByLogin(login).orElseThrow(() -> new UsernameNotFoundException(login));
     }
 
@@ -84,5 +74,15 @@ public class UserServiceImpl extends AbstractServiceImpl<User, UserDao> implemen
     @Override
     public boolean isPhoneUnavailable(String phone) {
         return getDefaultDao().getUserByPhone(phone).isPresent();
+    }
+
+    @Override
+    protected UserDao getDefaultDao() {
+        return userDao;
+    }
+
+    @Override
+    protected Class<User> getDefaultEntityClass() {
+        return User.class;
     }
 }

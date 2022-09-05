@@ -29,39 +29,27 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
 
     @Transactional
     @Override
-    public void update(T element) {
-        getDefaultDao().update(element);
+    public T update(T element) {
+        return getDefaultDao().update(element);
     }
 
     @Transactional
     @Override
-    public void deleteById(Long id) throws EntityNotFoundByIdException {
-        try {
-            getDefaultDao().delete(getDefaultDao().getById(id)
-                    .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass())));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+    public void deleteById(Long id) {
+        getDefaultDao().delete(getDefaultDao().getById(id)
+                .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass())));
     }
 
     @Override
     public List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
-                          String orderBy,
-                          boolean ascending,
-                          int limit) {
+                          String orderBy, boolean ascending, int limit) {
         return getDefaultDao().getAll(mapOfFieldNamesAndValuesToSelectBy, orderBy, ascending, limit);
     }
 
     @Override
-    public T getById(Long id) throws EntityNotFoundByIdException {
-        try {
-            return getDefaultDao().getById(id)
-                    .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass()));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+    public T getById(Long id) {
+        return getDefaultDao().getById(id)
+                .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass()));
     }
 
     @Override

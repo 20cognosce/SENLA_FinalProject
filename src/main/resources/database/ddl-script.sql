@@ -8,10 +8,11 @@ create table IF NOT EXISTS public.tariff
 
 create table IF NOT EXISTS public.subscription
 (
-    id          serial PRIMARY KEY,
-    name        varchar,
-    price       decimal(19, 4),
-    description varchar
+    id               serial PRIMARY KEY,
+    name             varchar,
+    price            decimal(19, 4),
+    duration_in_days int NOT NULL,
+    description      varchar
 );
 
 create table IF NOT EXISTS public.users
@@ -150,7 +151,6 @@ CREATE SCHEMA public;
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
 */
-
 
 /*
 Ctrl + Alt + L - reformat code

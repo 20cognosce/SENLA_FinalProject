@@ -12,7 +12,7 @@ public interface AbstractService<T> {
 
     void create(T element) throws NonUniqueResultException;
 
-    void update(T element);
+    T update(T element);
 
     void deleteById(Long id) throws EntityNotFoundByIdException;
 

@@ -201,8 +201,8 @@ public class UserController {
     @PatchMapping(value = "/{id}/subscription", params = {"subscription-id"})
     public void updateUserSubscriptionById(@PathVariable Long id,
                                            @RequestParam(value = "subscription-id") Long subscriptionId) {
-        Subscription subscription = subscriptionService.getById(subscriptionId);
         User user = userService.getById(id);
+        Subscription subscription = subscriptionService.getById(subscriptionId);
         subscriptionService.setSubscriptionToUser(user, subscription);
     }
 
@@ -215,26 +215,26 @@ public class UserController {
     @PatchMapping(value = "/my")
     public void updateUserByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                  @RequestBody UserUpdateDto userUpdateDto) {
-        updateUserById(userDetails.getId(), userUpdateDto);
+        updateUserById(userDetails.getUser().getId(), userUpdateDto);
     }
 
     @PatchMapping(value = "/my/credentials")
     public void updateUserCredentialsByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                             @RequestBody UserCredentialsUpdateDto credentialsUpdateDto) {
-        updateUserCredentialsById(userDetails.getId(), credentialsUpdateDto);
+        updateUserCredentialsById(userDetails.getUser().getId(), credentialsUpdateDto);
     }
 
     @PatchMapping(value = "/my/tariff", params = {"tariff-id"})
     public void updateUserTariffByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                        @RequestParam(value = "tariff-id") Long tariffId) {
-        updateUserTariffById(userDetails.getId(), tariffId);
+        updateUserTariffById(userDetails.getUser().getId(), tariffId);
     }
 
     @PatchMapping(value = "/my/subscription", params = {"subscription-id"})
     public void updateUserSubscriptionByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                              @RequestParam(value = "subscription-id") Long subscriptionId) {
         if (true) { //assuming user has paid for subscription
-            updateUserSubscriptionById(userDetails.getId(), subscriptionId);
+            updateUserSubscriptionById(userDetails.getUser().getId(), subscriptionId);
         }
     }
 }

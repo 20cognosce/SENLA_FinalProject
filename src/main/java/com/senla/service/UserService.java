@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public interface UserService extends AbstractService<User> {
 
     boolean isRootCreated();
-    User getUserByLogin(String login);
+    User getUserByLogin(@NonNull String login);
 
     boolean isLoginIncorrect(@NonNull String login);
     boolean isPasswordIncorrect(@NonNull String password);

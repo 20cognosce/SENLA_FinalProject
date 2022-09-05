@@ -12,10 +12,9 @@ public interface AbstractDao<T> {
 
     Optional<T> getById(Long id);
 
-    void update(T element);
+    T update(T element);
 
     void delete(T element);
-    void refresh(T element);
 
     List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
                    String orderBy,

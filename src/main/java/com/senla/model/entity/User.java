@@ -57,6 +57,6 @@ public class User {
     @JoinColumn(name = "tariff_id")
     @ManyToOne
     private Tariff tariff;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
     private User2Subscription user2Subscription;
 }

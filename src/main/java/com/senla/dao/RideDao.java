@@ -14,5 +14,5 @@ public interface RideDao extends AbstractDao<Ride> {
     List<Ride> getRidesOfTheUser(User user, RideStatus rideStatus, Integer limit);
     List<Ride> getRidesOfTheScooter(Scooter scooter, Integer limit);
     List<Ride> getRidesOfTheScooter(Scooter scooter, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideStartTimestamp);
-    void deletePendingRides(Duration minTimePending);
+    void deletePendingRidesOfTheUser(Duration minPendingRideLifetime, User user);
 }

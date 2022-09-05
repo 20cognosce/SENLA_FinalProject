@@ -51,10 +51,6 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
         return user.getStatus() != UserAccountStatus.DELETED;
     }
 
-    public Long getId() {
-        return user.getId();
-    }
-
     public UserDetailsImpl(User user) {
         this.user = user;
     }

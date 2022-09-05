@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.util.List;
 
 @Setter
@@ -13,6 +14,7 @@ public class SubscriptionCreationDto {
 
     private String name;
     private Double price;
+    private Integer durationInDays;
     private String description;
     private List<Long> models;
 }

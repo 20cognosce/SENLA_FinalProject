@@ -3,7 +3,9 @@ package com.senla.controller.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.postgresql.util.PGInterval;
 
+import java.time.Duration;
 import java.util.List;
 
 @Setter
@@ -14,6 +16,7 @@ public class SubscriptionDto {
     private Long id;
     private String name;
     private Double price;
+    private Integer durationInDays;
 
     private String description;
 

@@ -7,6 +7,7 @@ import com.senla.model.entity.Subscription;
 import com.senla.model.entity.User;
 import com.senla.model.entity.User2Subscription;
 import com.senla.service.SubscriptionService;
+import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,31 +19,27 @@ import java.util.Objects;
 @Service
 public class SubscriptionServiceImpl extends AbstractServiceImpl<Subscription, SubscriptionDao> implements SubscriptionService {
 
+    private final UserService userService;
     private final SubscriptionDao subscriptionDao;
     private final User2SubscriptionDao user2SubscriptionDao;
-    private final UserDao userDao;
 
     @Transactional
     @Override
     public void setSubscriptionToUser(User user, Subscription subscription) {
-        User2Subscription currentUser2Subscription = user.getUser2Subscription();
-        if (!Objects.isNull(currentUser2Subscription)) {
-            user2SubscriptionDao.delete(currentUser2Subscription);
+        user = userService.update(user); //to make user managed by hibernate
+
+        if (!Objects.isNull(user.getUser2Subscription())) {
+            user.setUser2Subscription(null); //deleting previous subscription
         }
 
         User2Subscription user2Subscription = User2Subscription.builder()
                 .user(user)
                 .subscription(subscription)
                 .startTime(LocalDateTime.now())
-                .endTime(LocalDateTime.now().plusDays(30))
+                .endTime(LocalDateTime.now().plusDays(subscription.getDurationInDays()))
                 .build();
 
-        if ("Вечная".equals(subscription.getName())) {
-            user2Subscription.setEndTime(LocalDateTime.now().plusYears(100));
-        }
-
         user2SubscriptionDao.create(user2Subscription);
-        userDao.refresh(user);
     }
 
     @Override

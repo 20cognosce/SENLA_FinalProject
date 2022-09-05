@@ -1,6 +1,5 @@
 package com.senla.service.impl;
 
-import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.dao.RideDao;
 import com.senla.dao.ScooterDao;
 import com.senla.dao.UserDao;
@@ -16,6 +15,7 @@ import com.senla.model.entityenum.ScooterConditionStatus;
 import com.senla.service.RideService;
 import com.senla.service.TariffService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +23,25 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implements RideService {
 
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final TariffService tariffService;
     private final RideDao rideDao;
     private final UserDao userDao;
     private final ScooterDao scooterDao;
 
     @Override
-    public List<Ride> getRidesOfTheUser(Long userId, RideStatus rideStatus, Integer limit) {
-        User user = userDao.getById(userId).orElseThrow(() -> new EntityNotFoundByIdException(userId, User.class));
+    public List<Ride> getRidesOfTheUser(User user, RideStatus rideStatus, Integer limit) {
         List<Ride> rides = getDefaultDao().getRidesOfTheUser(user, rideStatus, limit);
 
         if (rideStatus == RideStatus.ACTIVE) {
@@ -48,14 +52,12 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
     }
 
     @Override
-    public List<Ride> getRidesOfTheScooter(Long scooterId, Integer limit) {
-        Scooter scooter = scooterDao.getById(scooterId).orElseThrow(() -> new EntityNotFoundByIdException(scooterId, Scooter.class));
+    public List<Ride> getRidesOfTheScooter(Scooter scooter, Integer limit) {
         return getDefaultDao().getRidesOfTheScooter(scooter, limit);
     }
 
     @Override
-    public List<Ride> getRidesOfTheScooter(Long scooterId, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideStartTimestamp) {
-        Scooter scooter = scooterDao.getById(scooterId).orElseThrow(() -> new EntityNotFoundByIdException(scooterId, Scooter.class));
+    public List<Ride> getRidesOfTheScooter(Scooter scooter, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideStartTimestamp) {
         return getDefaultDao().getRidesOfTheScooter(scooter, firstRideStartTimestamp, lastRideStartTimestamp);
     }
 
@@ -83,6 +85,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
                 .build();
 
         getDefaultDao().create(ride);
+        startCountdownForDeletionOfPendingRidesOfTheUser(Duration.ofSeconds(30), user);
         return ride;
     }
 
@@ -115,6 +118,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
                 .build();
 
         getDefaultDao().create(ride);
+        startCountdownForDeletionOfPendingRidesOfTheUser(Duration.ofSeconds(30), user);
         return ride;
     }
 
@@ -154,10 +158,16 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
         getDefaultDao().update(ride);
     }
 
-    @Transactional
     @Override
-    public void deletePendingRides(Duration minPendingTime) {
-        getDefaultDao().deletePendingRides(minPendingTime);
+    public void startCountdownForDeletionOfPendingRidesOfTheUser(Duration minPendingRideLifetime, User user) {
+        scheduler.schedule(() -> {
+            try {
+                getDefaultDao().deletePendingRidesOfTheUser(minPendingRideLifetime, user);
+            } catch (Exception e) {
+                log.error("Не удалось удалить поездки пользователя с истекшим сроком ожидания", e);
+                throw new RuntimeException(e);
+            }
+        }, 30, TimeUnit.SECONDS);
     }
 
     @Override

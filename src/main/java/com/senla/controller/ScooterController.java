@@ -4,7 +4,10 @@ import com.senla.controller.dto.ScooterDto;
 import com.senla.controller.dto.creation.ScooterCreationDto;
 import com.senla.controller.dto.update.ScooterUpdateDto;
 import com.senla.controller.mapper.ScooterMapper;
+import com.senla.model.entity.RentalPoint;
 import com.senla.model.entity.Scooter;
+import com.senla.model.entity.ScooterModel;
+import com.senla.service.RentalPointService;
 import com.senla.service.ScooterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScooterController {
 
     private final ScooterService scooterService;
+    private final RentalPointService rentalPointService;
     private final ScooterMapper scooterMapper;
 
     @GetMapping(value = "/{id}")
@@ -49,13 +53,17 @@ public class ScooterController {
 
     @PatchMapping(value = "/{id}", params = {"model-id"})
     public void updateScooterModel(@PathVariable("id") Long id, @RequestParam(value = "model-id") Long modelId) {
-        scooterService.updateScooterModel(id, modelId);
+        Scooter scooter = scooterService.getById(id);
+        ScooterModel scooterModel = scooterService.getScooterModelById(modelId);
+        scooterService.updateScooterModel(scooter, scooterModel);
     }
 
     @PatchMapping(value = "/{id}", params = {"rental-point-id"})
     public void updateScooterRentalPoint(@PathVariable("id") Long id,
                                          @RequestParam(value = "rental-point-id") Long rentalPointId) {
-        scooterService.updateScooterRentalPoint(id, rentalPointId);
+        Scooter scooter = scooterService.getById(id);
+        RentalPoint rentalPoint = rentalPointService.getById(rentalPointId);
+        scooterService.updateScooterRentalPoint(scooter, rentalPoint);
     }
 
     @DeleteMapping(value = "/{id}")

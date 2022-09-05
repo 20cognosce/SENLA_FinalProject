@@ -35,18 +35,13 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public void update(T element) {
-        entityManager.merge(element);
+    public T update(T element) {
+        return entityManager.merge(element);
     }
 
     @Override
     public void delete(T element) {
         entityManager.remove(element);
-    }
-
-    @Override
-    public void refresh(T element) {
-        entityManager.refresh(element);
     }
 
     @Override

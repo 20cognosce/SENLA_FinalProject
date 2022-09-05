@@ -12,10 +12,10 @@ import com.senla.security.UserDetailsImpl;
 import com.senla.service.RentalPointService;
 import com.senla.service.RideService;
 import com.senla.service.ScooterService;
+import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -42,17 +41,20 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class RideController {
 
-    private final ScooterService scooterService;
     private final RideService rideService;
+    private final UserService userService;
+    private final ScooterService scooterService;
     private final RentalPointService rentalPointService;
     private final RideMapper rideMapper;
+
 
     @GetMapping(params = {"user-id", "status"})
     public List<RideDto> getUserRidesById(@RequestParam("user-id") Long userId,
                                           @RequestParam("status") String status,
                                           @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
         RideStatus rideStatus = RideStatus.valueOf(status.toUpperCase(Locale.ROOT));
-        List<Ride> rides = rideService.getRidesOfTheUser(userId, rideStatus, limit);
+        User user = userService.getById(userId);
+        List<Ride> rides = rideService.getRidesOfTheUser(user, rideStatus, limit);
         return rides.stream().map(rideMapper::convertToDto).collect(toList());
     }
 
@@ -60,7 +62,8 @@ public class RideController {
     public List<RideDto> getScooterRidesById(@RequestParam("scooter-id") Long scooterId,
                                              @RequestParam(value = "firstStartTime", defaultValue = "first", required = false) LocalDateTime firstStartTime,
                                              @RequestParam(value = "lastStartTime", defaultValue = "last", required = false) LocalDateTime lastStartTime) {
-        List<Ride> rides = rideService.getRidesOfTheScooter(scooterId, firstStartTime, lastStartTime);
+        Scooter scooter = scooterService.getById(scooterId);
+        List<Ride> rides = rideService.getRidesOfTheScooter(scooter, firstStartTime, lastStartTime);
         return rides.stream().map(rideMapper::convertToDto).collect(toList());
     }
 
@@ -68,16 +71,17 @@ public class RideController {
     public List<RideDto> getRidesByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                         @PathVariable("status") String status,
                                         @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
-        return getUserRidesById(userDetails.getId(), status, limit);
+        return getUserRidesById(userDetails.getUser().getId(), status, limit);
     }
 
-    //Scheduler cleans pending more than 30 seconds rides once in 30 seconds
+    //Scheduler in RideService cleans pending more than 30 seconds rides of the user
+    //TODO: need performance benchmark
     @PostMapping(value = "/my", params = {"scooter-id", "payment"})
     public RideDto createRide(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @RequestParam("scooter-id") Long scooterId,
                               @RequestParam("payment") String payment) {
 
-        if (rideService.getRidesOfTheUser(userDetails.getId(), RideStatus.PENDING, 5).size() == 5) {
+        if (rideService.getRidesOfTheUser(userDetails.getUser(), RideStatus.PENDING, 5).size() == 5) {
             throw new RuntimeException("Достигнут лимит количества ожидающих начала поездок (5). " +
                     "Повторите попытку через 30 секунд");
         }
@@ -85,10 +89,13 @@ public class RideController {
         User user = userDetails.getUser();
         Scooter scooter = scooterService.getById(scooterId);
         if ("tariff".equals(payment)) {
-            return rideMapper.convertToDto(rideService.createRideWithTariff(scooter, user));
+            Ride ride = rideService.createRideWithTariff(scooter, user);
+            return rideMapper.convertToDto(ride);
+
         }
         if ("subscription".equals(payment)) {
-            return rideMapper.convertToDto(rideService.createRideWithSubscription(scooter, user));
+            Ride ride = rideService.createRideWithSubscription(scooter, user);
+            return rideMapper.convertToDto(ride);
         }
 
         throw new RuntimeException("Не выбрана опция оплаты поездки");
@@ -96,12 +103,12 @@ public class RideController {
 
     @PutMapping(value = "/my/pending/{ride-id}")
     public void startRide(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("ride-id") Long rideId) {
-        if (rideService.getRidesOfTheUser(userDetails.getId(), RideStatus.ACTIVE, 5).size() == 5) {
+        if (rideService.getRidesOfTheUser(userDetails.getUser(), RideStatus.ACTIVE, 5).size() == 5) {
             throw new RuntimeException("Достигнут лимит количества активных поездок. Нельзя брать в прокат больше 5-ти"
                     + " самокатов одновременно");
         }
 
-        List<Ride> rides = rideService.getRidesOfTheUser(userDetails.getId(), RideStatus.PENDING, 5);
+        List<Ride> rides = rideService.getRidesOfTheUser(userDetails.getUser(), RideStatus.PENDING, 5);
         Ride ride = rides.stream()
                 .filter(element -> Objects.equals(element.getId(), rideId))
                 .findFirst()
@@ -117,7 +124,7 @@ public class RideController {
                         @RequestParam("mileage") Double mileage,
                         @RequestParam("charge") Double charge) {
 
-        List<Ride> rides = rideService.getRidesOfTheUser(userDetails.getId(), RideStatus.ACTIVE, 10);
+        List<Ride> rides = rideService.getRidesOfTheUser(userDetails.getUser(), RideStatus.ACTIVE, 10);
         Ride ride = rides.stream()
                 .filter(element -> Objects.equals(element.getId(), rideId))
                 .findFirst()
@@ -144,11 +151,5 @@ public class RideController {
             }
         };
         binder.registerCustomEditor(LocalDateTime.class, dateEditor);
-    }
-
-    //TODO: potential performance issues
-    @Scheduled(initialDelay = 30_000, fixedDelay = 30_000)
-    public void cleanPendingRides() {
-        rideService.deletePendingRides(Duration.ofSeconds(30));
     }
 }
