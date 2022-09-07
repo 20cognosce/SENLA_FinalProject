@@ -141,7 +141,7 @@ public class RentalPointController {
      * Takes coordinates, gets address via HERE api, and create a rental point with that address. <br>
      * <code>
      *     Example: <br>
-     *     /v1/rental-points?lat=59.93&lng=30.36&desc=Точка проката рядом с магазином KFC
+     *     /v1/rental-points?lat=59.93&amp;lng=30.36&amp;desc=Точка проката рядом с магазином KFC
      * </code>
      * @param lat rental point's latitude
      * @param lng rental point's longitude

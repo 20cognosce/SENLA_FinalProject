@@ -24,8 +24,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, UserDao> implemen
     @Transactional
     @Override
     public void deleteById(Long id) {
-        User user = getDefaultDao().getById(id)
-                .orElseThrow(() -> new EntityNotFoundByIdException(id, User.class));
+        User user = getDefaultDao().getById(id).orElseThrow(() -> new EntityNotFoundByIdException(id, User.class));
         user.setStatus(UserAccountStatus.DELETED);
         getDefaultDao().update(user);
     }

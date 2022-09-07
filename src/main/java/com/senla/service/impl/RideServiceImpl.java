@@ -1,8 +1,6 @@
 package com.senla.service.impl;
 
 import com.senla.dao.RideDao;
-import com.senla.dao.ScooterDao;
-import com.senla.dao.UserDao;
 import com.senla.model.entity.RentalPoint;
 import com.senla.model.entity.Ride;
 import com.senla.model.entity.Scooter;
@@ -37,8 +35,6 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final TariffService tariffService;
     private final RideDao rideDao;
-    private final UserDao userDao;
-    private final ScooterDao scooterDao;
 
     @Override
     public List<Ride> getRidesOfTheUser(User user, RideStatus rideStatus, Integer limit) {
@@ -85,7 +81,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
                 .build();
 
         getDefaultDao().create(ride);
-        startCountdownForDeletionOfPendingRidesOfTheUser(Duration.ofSeconds(30), user);
+        startCountdownForDeletionOfPendingRidesOfTheUser(Duration.ofSeconds(30), user, 30);
         return ride;
     }
 
@@ -118,7 +114,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
                 .build();
 
         getDefaultDao().create(ride);
-        startCountdownForDeletionOfPendingRidesOfTheUser(Duration.ofSeconds(30), user);
+        startCountdownForDeletionOfPendingRidesOfTheUser(Duration.ofSeconds(30), user, 30);
         return ride;
     }
 
@@ -130,6 +126,8 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
         ride.getScooter().setStatus(ScooterConditionStatus.IN_USE);
         ride.getScooter().setRentalPoint(null);
         getDefaultDao().update(ride);
+        // if the ride has been deleted after getting it in controller,
+        // entity manager will throw exception on updating deleted entity
     }
 
     @Transactional
@@ -149,7 +147,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
         scooter.setMileage(scooter.getMileage() + mileage);
         scooter.setCharge(charge);
         scooter.setRentalPoint(rentalPoint);
-        if (charge < 15) {
+        if (charge <= 1) {
             scooter.setStatus(ScooterConditionStatus.DISCHARGED);
         } else {
             scooter.setStatus(ScooterConditionStatus.OK);
@@ -159,7 +157,8 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
     }
 
     @Override
-    public void startCountdownForDeletionOfPendingRidesOfTheUser(Duration minPendingRideLifetime, User user) {
+    public void startCountdownForDeletionOfPendingRidesOfTheUser(Duration minPendingRideLifetime, User user,
+                                                                 long delayInSeconds) {
         scheduler.schedule(() -> {
             try {
                 getDefaultDao().deletePendingRidesOfTheUser(minPendingRideLifetime, user);
@@ -167,7 +166,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
                 log.error("Не удалось удалить поездки пользователя с истекшим сроком ожидания", e);
                 throw new RuntimeException(e);
             }
-        }, 30, TimeUnit.SECONDS);
+        }, delayInSeconds, TimeUnit.SECONDS);
     }
 
     @Override

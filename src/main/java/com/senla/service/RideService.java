@@ -18,7 +18,7 @@ public interface RideService extends AbstractService<Ride> {
 
     Ride createRideWithTariff(Scooter scooter, User user);
     Ride createRideWithSubscription(Scooter scooter, User user);
-    void startCountdownForDeletionOfPendingRidesOfTheUser(Duration minPendingRideLifetime, User user);
+    void startCountdownForDeletionOfPendingRidesOfTheUser(Duration minPendingRideLifetime, User user, long delayInSeconds);
 
     void startRide(Ride ride);
     void endRide(Ride ride, RentalPoint endRentalPoint, Double mileage, Double charge);

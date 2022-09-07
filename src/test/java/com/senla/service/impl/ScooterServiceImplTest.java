@@ -1,7 +1,6 @@
 package com.senla.service.impl;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.dao.RentalPointDao;
 import com.senla.dao.ScooterDao;
 import com.senla.dao.ScooterModelDao;
 import com.senla.model.entity.RentalPoint;

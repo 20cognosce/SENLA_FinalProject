@@ -58,7 +58,7 @@ class LoginServiceImplTest {
         LoginDto loginDto = new LoginDto();
         loginDto.setLogin("user");
         loginDto.setPassword("user");
-        when(userDao.getUserByLogin("user")).thenThrow(new IllegalArgumentException());
+        when(userDao.getUserByLogin("user")).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> loginService.tryToLoginReturnUserIfSuccess(loginDto));
     }

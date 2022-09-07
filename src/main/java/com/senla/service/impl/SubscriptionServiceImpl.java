@@ -2,7 +2,6 @@ package com.senla.service.impl;
 
 import com.senla.dao.SubscriptionDao;
 import com.senla.dao.User2SubscriptionDao;
-import com.senla.dao.UserDao;
 import com.senla.model.entity.Subscription;
 import com.senla.model.entity.User;
 import com.senla.model.entity.User2Subscription;

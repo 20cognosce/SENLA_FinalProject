@@ -91,7 +91,6 @@ public class RideController {
         if ("tariff".equals(payment)) {
             Ride ride = rideService.createRideWithTariff(scooter, user);
             return rideMapper.convertToDto(ride);
-
         }
         if ("subscription".equals(payment)) {
             Ride ride = rideService.createRideWithSubscription(scooter, user);

@@ -30,6 +30,7 @@ public interface AbstractService<T> {
      * @param dto DTO object which contains new values for setting
      * @param originalClass Class of the original object
      * @param <DTO> Class of the corresponding DTO
+     * @param <O> Original object class
      * @return original object with updated fields
      */
     <DTO, O> O updateEntityFromDto(O original, DTO dto, Class<O> originalClass);
