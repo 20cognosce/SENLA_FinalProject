@@ -15,6 +15,7 @@ import com.senla.service.ScooterService;
 import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
@@ -58,12 +59,14 @@ public class RideController {
         return rides.stream().map(rideMapper::convertToDto).collect(toList());
     }
 
-    @GetMapping(params = {"scooter-id"})
+    @GetMapping(params = {"scooter-id"}) //firstStartTime=2022-09-12T00:00
     public List<RideDto> getScooterRidesById(@RequestParam("scooter-id") Long scooterId,
-                                             @RequestParam(value = "firstStartTime", defaultValue = "first", required = false) LocalDateTime firstStartTime,
-                                             @RequestParam(value = "lastStartTime", defaultValue = "last", required = false) LocalDateTime lastStartTime) {
+                                             @RequestParam(value = "firstStartTime", defaultValue = "first", required = false)
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime firstStartTime,
+                                             @RequestParam(value = "lastEndTime", defaultValue = "last", required = false)
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime lastEndTime) {
         Scooter scooter = scooterService.getById(scooterId);
-        List<Ride> rides = rideService.getRidesOfTheScooter(scooter, firstStartTime, lastStartTime);
+        List<Ride> rides = rideService.getRidesOfTheScooter(scooter, firstStartTime, lastEndTime);
         return rides.stream().map(rideMapper::convertToDto).collect(toList());
     }
 

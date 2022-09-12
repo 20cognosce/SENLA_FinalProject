@@ -53,8 +53,8 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
     }
 
     @Override
-    public List<Ride> getRidesOfTheScooter(Scooter scooter, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideStartTimestamp) {
-        return getDefaultDao().getRidesOfTheScooter(scooter, firstRideStartTimestamp, lastRideStartTimestamp);
+    public List<Ride> getRidesOfTheScooter(Scooter scooter, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideEndTimestamp) {
+        return getDefaultDao().getRidesOfTheScooter(scooter, firstRideStartTimestamp, lastRideEndTimestamp);
     }
 
     @Transactional
@@ -121,6 +121,10 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, RideDao> implemen
     @Transactional
     @Override
     public void startRide(Ride ride) {
+        if (ride.getScooter().getStatus() == ScooterConditionStatus.UNAVAILABLE
+                || ride.getScooter().getStatus() == ScooterConditionStatus.IN_USE) {
+            throw new IllegalArgumentException("Выбранный самокат не доступен");
+        }
         ride.setStartTimestamp(LocalDateTime.now());
         ride.setStatus(RideStatus.ACTIVE);
         ride.getScooter().setStatus(ScooterConditionStatus.IN_USE);

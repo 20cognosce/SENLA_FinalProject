@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.senla.model.entity.Geolocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,16 +19,17 @@ import java.util.Objects;
 
 //using HERE location platform (Google Maps analog)
 @Slf4j
+@Component
 public class Geocoder {
 
     @Value("${geocoding.resource}")
-    private static String GEOCODING_RESOURCE;
-    @Value("{reverse.geocoding.resource}")
-    public static String REVERSE_GEOCODING_RESOURCE;
+    private String GEOCODING_RESOURCE;
+    @Value("${reverse.geocoding.resource}")
+    public String REVERSE_GEOCODING_RESOURCE;
     @Value("${api.key}")
-    private static String API_KEY;
+    private String API_KEY;
 
-    public static Geolocation getGeolocationFromCoordinates(Double latitude, Double longitude) {
+    public Geolocation getGeolocationFromCoordinates(Double latitude, Double longitude) {
         try {
             String geocode = getGeocodeResponseFromCoordinates(latitude, longitude);
 
@@ -65,7 +67,7 @@ public class Geocoder {
         }
     }
 
-    private static String getGeocodeResponseFromQuery(String query) throws IOException, InterruptedException {
+    private String getGeocodeResponseFromQuery(String query) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
 
@@ -84,7 +86,7 @@ public class Geocoder {
         return geocodingResponse.body();
     }
 
-    private static String getGeocodeResponseFromCoordinates(Double latitude, Double longitude) throws IOException, InterruptedException {
+    private String getGeocodeResponseFromCoordinates(Double latitude, Double longitude) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         String requestUri = REVERSE_GEOCODING_RESOURCE

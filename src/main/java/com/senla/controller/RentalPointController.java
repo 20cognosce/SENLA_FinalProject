@@ -34,6 +34,7 @@ public class RentalPointController {
 
     private final RentalPointMapper rentalPointMapper;
     private final RentalPointService rentalPointService;
+    private final Geocoder geocoder;
 
     /**
      * Getting the list of rental points by selection options. <br>
@@ -150,10 +151,11 @@ public class RentalPointController {
      *             location (e.g. mentioning the closest landmarks)
      */
     @PostMapping(params = {"lat", "lng"})
-    public void createRentalPoint(@RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
+    public void createRentalPoint(@RequestParam(value = "lat") Double lat,
+                                  @RequestParam(value = "lng") Double lng,
                                   @RequestParam(value = "desc", defaultValue = "", required = false) String desc) {
 
-        Geolocation geolocation = Geocoder.getGeolocationFromCoordinates(lat, lng);
+        Geolocation geolocation = geocoder.getGeolocationFromCoordinates(lat, lng);
         if (!Objects.equals(desc, "")) {
             geolocation.setDescription(desc);
         }

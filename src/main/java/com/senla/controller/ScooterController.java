@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/scooters", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,6 +36,15 @@ public class ScooterController {
     private final ScooterService scooterService;
     private final RentalPointService rentalPointService;
     private final ScooterMapper scooterMapper;
+
+    @GetMapping
+    public List<ScooterDto> getAll(@RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
+                                @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+                                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+
+        List<Scooter> scooters = scooterService.getAll(new HashMap<>(), orderBy, asc, limit);
+        return scooters.stream().map(scooterMapper::convertToDto).collect(toList());
+    }
 
     @GetMapping(value = "/{id}")
     public ScooterDto getById(@PathVariable("id") Long id) {

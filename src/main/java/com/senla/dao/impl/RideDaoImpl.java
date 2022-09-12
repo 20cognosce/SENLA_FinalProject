@@ -76,7 +76,7 @@ public class RideDaoImpl extends AbstractDaoImpl<Ride> implements RideDao {
     @Override
     public List<Ride> getRidesOfTheScooter(Scooter scooter,
                                            LocalDateTime firstRideStartTimestamp,
-                                           LocalDateTime lastRideStartTimestamp) {
+                                           LocalDateTime lastRideEndTimestamp) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Ride> cq = cb.createQuery(Ride.class);
@@ -85,7 +85,7 @@ public class RideDaoImpl extends AbstractDaoImpl<Ride> implements RideDao {
         Order order = new OrderImpl(root.get("startTimestamp"), true);
         Predicate predicateForScooter = cb.equal(root.get("scooter"), scooter);
         Predicate predicateForStartTimestamp = cb.greaterThanOrEqualTo(root.get("startTimestamp"), firstRideStartTimestamp);
-        Predicate predicateForEndTimestamp = cb.lessThanOrEqualTo(root.get("endTimestamp"), lastRideStartTimestamp);
+        Predicate predicateForEndTimestamp = cb.lessThanOrEqualTo(root.get("endTimestamp"), lastRideEndTimestamp);
 
         TypedQuery<Ride> q = entityManager.createQuery(cq
                 .select(root)

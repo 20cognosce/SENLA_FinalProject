@@ -50,7 +50,8 @@
 /v1/rental-points
 Выполнено: @PostMapping public void createRentalPoint(@RequestBody RentalPointCreationDto rentalPointCreationDto)
            @PostMapping(params = {"lat", "lng"}) public void createRentalPoint(
-                @RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
+                @RequestParam(value = "lat") Double lat,
+                @RequestParam(value = "lng") Double lng,
                 @RequestParam(value = "desc", defaultValue = "", required = false) String desc)
            @PatchMapping(value = "/{id}") public void updateGeolocationOfRentalPoint(@PathVariable("id") Long id,
                 @RequestBody GeolocationUpdateDto updateModel)
@@ -58,6 +59,10 @@
 
 /v1/scooters
 Выполнено: @GetMapping(value = "/{id}") public ScooterDto getById(@PathVariable("id") Long id)
+           @GetMapping public List<ScooterDto> getAll(
+                @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
+                @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
            @PostMapping public void createScooter(@RequestBody ScooterCreationDto scooterCreationDto)
            @PatchMapping(value = "/{id}") public void updateScooter(@PathVariable("id") Long id, @RequestBody ScooterUpdateDto updateDto)
            @PatchMapping(value = "/{id}", params = {"model-id"}) public void updateScooterModel(@PathVariable("id") Long id,
@@ -76,12 +81,14 @@
            @GetMapping public List<TariffDto> getAllTariffs()
            @PostMapping public void createTariff(@RequestBody TariffCreationDto creationDto)
            @PatchMapping("/{id}") public void updateTariff(@PathVariable Long id, @RequestBody TariffUpdateDto updateDto)
+           @DeleteMapping(value = "/{id}") public void deleteTariff(@PathVariable("id") Long id)
 
 /v1/subscriptions
 Выполнено: @GetMapping("/{id}") public SubscriptionDto getSubscriptionById(@PathVariable Long id)
            @GetMapping public List<SubscriptionDto> getAllSubscription()
            @PostMapping public void createSubscription(@RequestBody SubscriptionCreationDto creationDto)
            @PatchMapping("/{id}") public void updateModelsForSubscription(@PathVariable Long id, @RequestBody SubscriptionUpdateDto updateDto)
+           @DeleteMapping(value = "/{id}") public void deleteSubscription(@PathVariable("id") Long id)
 
 7) Возможность аренды самоката пользователем по часовому тарифу либо на абонементной основе.
 /v1/rides/
@@ -99,8 +106,11 @@
 8) Просмотр истории аренды конкретного самоката администратором (кто, когда, пробег и д.р.)
 /v1/rides/
 Выполнено: @GetMapping(params = {"scooter-id"}) public List<RideDto> getScooterRidesById(@RequestParam("scooter-id") Long scooterId,
-               @RequestParam(value = "firstStartTime", defaultValue = "first", required = false) LocalDateTime firstStartTime,
-               @RequestParam(value = "lastStartTime", defaultValue = "last", required = false) LocalDateTime lastStartTime)
+               @RequestParam(value = "firstStartTime", defaultValue = "first", required = false)
+               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime firstStartTime,
+               @RequestParam(value = "lastEndTime", defaultValue = "last", required = false)
+               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime lastEndTime)
+               // firstStartTime=2022-09-12T00:00
            @GetMapping(params = {"user-id", "status"}) public List<RideDto> getUserRidesById(@RequestParam("user-id") Long userId,
                @RequestParam("status") String status,
                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
@@ -110,3 +120,29 @@
 Выполнено: @GetMapping("my/{status}") public List<RideDto> getRidesByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                @PathVariable("status") String status,
                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
+
+Разграничение доступа к эндпоинтам:
+                .antMatchers(HttpMethod.POST, "/v1/login").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/v1/rental-points/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.DELETE, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+
+                .antMatchers("/v1/scooters/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
+
+                .antMatchers(HttpMethod.POST, "/v1/users/root", "/v1/users").permitAll()
+                .antMatchers("/v1/users/my/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "/v1/users/{id}/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+
+                .antMatchers(HttpMethod.GET, "/v1/tariffs/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+
+                .antMatchers(HttpMethod.GET, "/v1/subscriptions/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+
+                .antMatchers("/v1/rides/my/**").authenticated()
+                .antMatchers("/v1/rides/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())

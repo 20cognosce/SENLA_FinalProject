@@ -8,6 +8,7 @@ import com.senla.model.entity.Tariff;
 import com.senla.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,5 +53,10 @@ public class TariffController {
         Tariff updatedTariff = tariffMapper.convertToTariff(updateDto);
         tariffService.updateEntityFromDto(tariff, updatedTariff, Tariff.class);
         tariffService.update(tariff);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void deleteTariff(@PathVariable("id") Long id) {
+        tariffService.deleteById(id);
     }
 }

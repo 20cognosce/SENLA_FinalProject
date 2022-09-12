@@ -23,7 +23,7 @@ import java.util.Date;
 public class JwtTokenSupplier {
 
     private final UserDetailsService userDetailsService;
-    @Value("{jwt.secret.key}")
+    @Value("${jwt.secret.key}")
     private String secretKey;
     @Value("${expirationTimeInSeconds}")
     private Long expirationTimeInSeconds;
