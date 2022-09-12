@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 public class GeolocationUpdateDto {
 
+    private Double latitude;
+    private Double longitude;
     private String countryCode;
     private String countryName;
     private String county;

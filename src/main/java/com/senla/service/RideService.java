@@ -14,7 +14,7 @@ public interface RideService extends AbstractService<Ride> {
 
     List<Ride> getRidesOfTheUser(User user, RideStatus rideStatus, Integer limit);
     List<Ride> getRidesOfTheScooter(Scooter scooter, Integer limit);
-    List<Ride> getRidesOfTheScooter(Scooter scooter, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideStartTimestamp);
+    List<Ride> getRidesOfTheScooter(Scooter scooter, LocalDateTime firstRideStartTimestamp, LocalDateTime lastRideEndTimestamp);
 
     Ride createRideWithTariff(Scooter scooter, User user);
     Ride createRideWithSubscription(Scooter scooter, User user);

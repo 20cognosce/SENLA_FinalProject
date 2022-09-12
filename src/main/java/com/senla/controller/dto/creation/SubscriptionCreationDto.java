@@ -13,7 +13,7 @@ public class SubscriptionCreationDto {
 
     private String name;
     private Double price;
-    private Integer durationInDays;
-    private String description;
+    private Integer durationInDays = 30;
+    private String description = "";
     private List<Long> models;
 }

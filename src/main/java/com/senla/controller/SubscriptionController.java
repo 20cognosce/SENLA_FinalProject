@@ -8,6 +8,7 @@ import com.senla.model.entity.Subscription;
 import com.senla.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,5 +53,10 @@ public class SubscriptionController {
         Subscription updatedSubscription = subscriptionMapper.convertToSubscription(updateDto);
         subscriptionService.updateEntityFromDto(subscription, updatedSubscription, Subscription.class);
         subscriptionService.update(subscription);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void deleteSubscription(@PathVariable("id") Long id) {
+        subscriptionService.deleteById(id);
     }
 }

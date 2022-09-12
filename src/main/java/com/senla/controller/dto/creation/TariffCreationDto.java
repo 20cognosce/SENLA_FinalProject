@@ -13,6 +13,6 @@ public class TariffCreationDto {
 
     private String name;
     private Double pricePerMinute;
-    private String description;
+    private String description = "";
     private List<Long> models;
 }

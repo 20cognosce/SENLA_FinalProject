@@ -295,9 +295,53 @@ class RideServiceImplTest {
     }
 
     @Test
-    void startRide() {
+    void startRide_scooterStatusIsUnavailable_IllegalArgumentExceptionThrown() {
+        Scooter scooter = Scooter.builder()
+                .status(ScooterConditionStatus.UNAVAILABLE)
+                .rentalPoint(new RentalPoint())
+                .build();
+        Ride ride = Ride.builder()
+                .scooter(scooter)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> rideService.startRide(ride));
+    }
+
+    @Test
+    void startRide_scooterStatusIsIN_USE_IllegalArgumentExceptionThrown() {
+        Scooter scooter = Scooter.builder()
+                .status(ScooterConditionStatus.IN_USE)
+                .rentalPoint(new RentalPoint())
+                .build();
+        Ride ride = Ride.builder()
+                .scooter(scooter)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> rideService.startRide(ride));
+    }
+
+    @Test
+    void startRide_scooterStatusIsOK_rideStarted() {
         Scooter scooter = Scooter.builder()
                 .status(ScooterConditionStatus.OK)
+                .rentalPoint(new RentalPoint())
+                .build();
+        Ride ride = Ride.builder()
+                .scooter(scooter)
+                .build();
+
+        rideService.startRide(ride);
+
+        assertTrue(ride.getStartTimestamp().isBefore(LocalDateTime.now().plusNanos(1)));
+        assertEquals(ride.getStatus(), RideStatus.ACTIVE);
+        assertEquals(ride.getScooter().getStatus(), ScooterConditionStatus.IN_USE);
+        assertNull(ride.getScooter().getRentalPoint());
+    }
+
+    @Test
+    void startRide_scooterStatusIsDischarged_rideStarted() {
+        Scooter scooter = Scooter.builder()
+                .status(ScooterConditionStatus.DISCHARGED)
                 .rentalPoint(new RentalPoint())
                 .build();
         Ride ride = Ride.builder()
