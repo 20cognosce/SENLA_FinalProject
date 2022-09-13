@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-@NoArgsConstructor
 public class UserUpdateDto {
 
     private String name;

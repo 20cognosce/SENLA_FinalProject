@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
 @Setter
 @Getter
 public class UserDto {

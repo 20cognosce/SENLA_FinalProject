@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@NoArgsConstructor
 public class User2SubscriptionDto {
 
     private LocalDateTime startTime;
