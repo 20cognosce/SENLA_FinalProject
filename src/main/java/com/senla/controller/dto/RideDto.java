@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@NoArgsConstructor
 public class RideDto {
 
     private Long id;

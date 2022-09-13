@@ -8,8 +8,9 @@ import com.senla.controller.mapper.RentalPointMapper;
 import com.senla.model.entity.Geolocation;
 import com.senla.model.entity.RentalPoint;
 import com.senla.service.RentalPointService;
-import com.senla.utils.geolocation.Geocoder;
+import com.senla.utils.Geocoder;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,7 +59,7 @@ public class RentalPointController {
     @GetMapping
     public List<RentalPointDto> getAll(@RequestBody(required = false) GeolocationSelectionDto selectionModel,
                                        @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-                                       @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+                                       @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
                                        @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
 
         Map<String, Object> selectParameters = rentalPointService.getMapOfObjectFieldsAndValues(selectionModel);

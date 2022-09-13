@@ -8,7 +8,6 @@ import java.util.List;
 
 @Setter
 @Getter
-@NoArgsConstructor
 public class TariffDto {
 
     private Long id;

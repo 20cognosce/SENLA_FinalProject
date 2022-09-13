@@ -20,6 +20,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         String responseBody = ex.getMessage();
         log.error(responseBody, ex);
-        return handleExceptionInternal(ex, responseBody, httpHeaders, HttpStatus.CONFLICT, req);
+        return handleExceptionInternal(ex, responseBody, httpHeaders, HttpStatus.INTERNAL_SERVER_ERROR, req);
     }
 }

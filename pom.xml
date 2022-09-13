@@ -29,7 +29,7 @@
 		<spring.security.config.version>5.7.3</spring.security.config.version>
 		<io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
 		<!--DATABASE-->
-		<hibernate.entitymanager.version>5.6.10.Final</hibernate.entitymanager.version>
+		<hibernate.entitymanager.version>5.6.11.Final</hibernate.entitymanager.version>
 		<spring.orm.version>5.3.22</spring.orm.version>
 		<postgresql.version>42.5.0</postgresql.version>
 		<!--LOGGING-->
@@ -37,15 +37,17 @@
 		<logback.classic.version>1.4.0</logback.classic.version>
 		<slfj.api.version>2.0.0</slfj.api.version>
 		<!--JSON-->
-		<jackson.databind.version>2.13.3</jackson.databind.version>
-		<jackson.datatype.jsr310.version>2.13.3</jackson.datatype.jsr310.version>
+		<jackson.databind.version>2.13.4</jackson.databind.version>
+		<jackson.datatype.jsr310.version>2.13.4</jackson.datatype.jsr310.version>
 		<!--TESTING-->
 		<junit.jupiter.engine.version>5.9.0</junit.jupiter.engine.version>
-		<mockito.core.version>4.7.0</mockito.core.version>
-		<mockito.junit.jupiter.version>4.7.0</mockito.junit.jupiter.version>
+		<mockito.core.version>4.8.0</mockito.core.version>
+		<mockito.junit.jupiter.version>4.8.0</mockito.junit.jupiter.version>
 		<spring.test.version>5.3.22</spring.test.version>
 		<!--LOMBOK-->
 		<lombok.version>1.18.24</lombok.version>
+		<!--APACHE_COMMONS_LANG3-->
+		<apache.commons.lang3>3.12.0</apache.commons.lang3>
 	</properties>
 
 	<dependencies>
@@ -171,7 +173,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
 		<!--LOMBOK-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -179,6 +180,14 @@
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!--APACHE_COMMONS_LANG3-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${apache.commons.lang3}</version> <!--For BooleanUtils-->
+		</dependency>
+
 	</dependencies>
 
 	<build>

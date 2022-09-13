@@ -11,6 +11,7 @@ import com.senla.service.RentalPointService;
 import com.senla.service.ScooterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class ScooterController {
 
     @GetMapping
     public List<ScooterDto> getAll(@RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-                                @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+                                @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
                                 @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
 
         List<Scooter> scooters = scooterService.getAll(new HashMap<>(), orderBy, asc, limit);

@@ -19,6 +19,7 @@ import com.senla.service.SubscriptionService;
 import com.senla.service.TariffService;
 import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -109,7 +110,7 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAll(@RequestBody(required = false) UserSelectionDto selectionModel,
                                 @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-                                @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
+                                @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
                                 @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
 
         Map<String, Object> selectParameters = userService.getMapOfObjectFieldsAndValues(selectionModel);
@@ -233,7 +234,7 @@ public class UserController {
     @PatchMapping(value = "/my/subscription", params = {"subscription-id"})
     public void updateUserSubscriptionByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                              @RequestParam(value = "subscription-id") Long subscriptionId) {
-        if (true) { //assuming user has paid for subscription
+        if (true) { //TODO assuming user has paid for subscription
             updateUserSubscriptionById(userDetails.getUser().getId(), subscriptionId);
         }
     }

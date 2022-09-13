@@ -1,4 +1,4 @@
-package com.senla.utils.geolocation;
+package com.senla.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,30 +37,7 @@ public class Geocoder {
             JsonNode responseJsonNode = mapper.readTree(geocode);
             JsonNode items = responseJsonNode.get("items");
 
-            JsonNode address = items.get(0).get("address");
-            JsonNode position = items.get(0).get("position");
-
-            String label = Objects.isNull(address.get("label")) ? "" : address.get("label").asText();
-            String countryCode = Objects.isNull(address.get("countryCode")) ? "" : address.get("countryCode").asText();
-            String countryName = Objects.isNull(address.get("countryName")) ? "" : address.get("countryName").asText();
-            String county = Objects.isNull(address.get("county")) ? "" : address.get("county").asText();
-            String city = Objects.isNull(address.get("city")) ? "" : address.get("city").asText();
-            String district = Objects.isNull(address.get("district")) ? "" : address.get("district").asText();
-            String street = Objects.isNull(address.get("street")) ? "" : address.get("street").asText();
-            String houseNumber = Objects.isNull(address.get("houseNumber")) ? "" : address.get("houseNumber").asText();
-
-            return Geolocation.builder()
-                    .latitude(position.get("lat").asDouble())
-                    .longitude(position.get("lng").asDouble())
-                    .countryCode(countryCode)
-                    .countryName(countryName)
-                    .county(county)
-                    .city(city)
-                    .district(district)
-                    .street(street)
-                    .houseNumber(houseNumber)
-                    .description(label)
-                    .build();
+            return getGeolocationFromJsonNode(items.get(0));
         } catch (IOException | InterruptedException e) {
             log.error("Не удалось получить геолокацию по запросу", e);
             throw new RuntimeException(e);
@@ -102,5 +79,31 @@ public class Geocoder {
 
         HttpResponse<String> geocodingResponse = httpClient.send(geocodingRequest, HttpResponse.BodyHandlers.ofString());
         return geocodingResponse.body();
+    }
+
+    private Geolocation getGeolocationFromJsonNode(JsonNode node) {
+        JsonNode address = node.get("address");
+        JsonNode position = node.get("position");
+        String label = Objects.isNull(address.get("label")) ? "" : address.get("label").asText();
+        String countryCode = Objects.isNull(address.get("countryCode")) ? "" : address.get("countryCode").asText();
+        String countryName = Objects.isNull(address.get("countryName")) ? "" : address.get("countryName").asText();
+        String county = Objects.isNull(address.get("county")) ? "" : address.get("county").asText();
+        String city = Objects.isNull(address.get("city")) ? "" : address.get("city").asText();
+        String district = Objects.isNull(address.get("district")) ? "" : address.get("district").asText();
+        String street = Objects.isNull(address.get("street")) ? "" : address.get("street").asText();
+        String houseNumber = Objects.isNull(address.get("houseNumber")) ? "" : address.get("houseNumber").asText();
+
+        return Geolocation.builder()
+                .latitude(position.get("lat").asDouble())
+                .longitude(position.get("lng").asDouble())
+                .countryCode(countryCode)
+                .countryName(countryName)
+                .county(county)
+                .city(city)
+                .district(district)
+                .street(street)
+                .houseNumber(houseNumber)
+                .description(label)
+                .build();
     }
 }

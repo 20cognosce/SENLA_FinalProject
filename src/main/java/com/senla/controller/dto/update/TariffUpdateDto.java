@@ -8,7 +8,6 @@ import java.util.List;
 
 @Setter
 @Getter
-@NoArgsConstructor
 public class TariffUpdateDto {
 
     private String name;
