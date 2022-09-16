@@ -1,7 +1,6 @@
 package com.senla.controller.dto.creation;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;

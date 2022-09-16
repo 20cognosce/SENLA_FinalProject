@@ -2,7 +2,6 @@ package com.senla.controller.dto;
 
 import com.senla.model.entity.Geolocation;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;

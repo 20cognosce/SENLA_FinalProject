@@ -2,7 +2,6 @@ package com.senla.controller.dto;
 
 import com.senla.model.entityenum.RideStatus;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Duration;

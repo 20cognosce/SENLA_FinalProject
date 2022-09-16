@@ -2,7 +2,6 @@ package com.senla.controller.dto.update;
 
 import com.senla.model.entityenum.ScooterConditionStatus;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
