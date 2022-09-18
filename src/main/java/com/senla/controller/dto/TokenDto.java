@@ -9,4 +9,9 @@ public class TokenDto {
 
     private String login;
     private String value;
+
+    public TokenDto(String login, String value) {
+        this.login = login;
+        this.value = value;
+    }
 }
