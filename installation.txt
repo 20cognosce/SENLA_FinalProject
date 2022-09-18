@@ -31,9 +31,9 @@
 3) Запустить файл build.bat если запуск происходит на Windows.
 3.1) Если не создалась папка /target или запуск происходит на Linux, то ввести в командную строку в директории проекта команды:
     mvn clean
-    mvn package
+    mvn install
 4) Во время установки Tomcat Windows Service Installer указать параметры входа для администратора
-5) Запустить Tomcat8w.exe
+5) Запустить Tomcat сервер
 6) Перейти в Manager app, ввести параметры входа
 7) В графе war file for deploy выбрать собранный WAR-файл (FinalProject-1.0.0.war) в папке /target
 8) Нажать deploy
