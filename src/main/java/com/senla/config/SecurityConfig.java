@@ -47,30 +47,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(jwtAuthProvider)
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.POST, "/v1/login").permitAll()
+                .antMatchers(HttpMethod.POST, "**/v1/login").permitAll()
 
-                .antMatchers(HttpMethod.GET, "/v1/rental-points/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-                .antMatchers(HttpMethod.PATCH, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-                .antMatchers(HttpMethod.DELETE, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.GET, "**/v1/rental-points/**").authenticated()
+                .antMatchers(HttpMethod.POST, "**/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "**/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.DELETE, "**/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
 
-                .antMatchers("/v1/scooters/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
+                .antMatchers("**/v1/scooters/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
 
-                .antMatchers(HttpMethod.POST, "/v1/users/root", "/v1/users").permitAll()
-                .antMatchers("/v1/users/my/**").authenticated()
-                .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
-                .antMatchers(HttpMethod.PATCH, "/v1/users/{id}/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.POST, "**/v1/users/root", "**/v1/users").permitAll()
+                .antMatchers("**/v1/users/my/**").authenticated()
+                .antMatchers(HttpMethod.GET, "**/v1/users/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "**/v1/users/{id}/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
 
-                .antMatchers(HttpMethod.GET, "/v1/tariffs/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-                .antMatchers(HttpMethod.PATCH, "/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.GET, "**/v1/tariffs/**").authenticated()
+                .antMatchers(HttpMethod.POST, "**/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "**/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
 
-                .antMatchers(HttpMethod.GET, "/v1/subscriptions/**").authenticated()
-                .antMatchers(HttpMethod.POST, "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-                .antMatchers(HttpMethod.PATCH, "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.GET, "**/v1/subscriptions/**").authenticated()
+                .antMatchers(HttpMethod.POST, "**/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
+                .antMatchers(HttpMethod.PATCH, "**/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
 
-                .antMatchers("/v1/rides/my/**").authenticated()
-                .antMatchers("/v1/rides/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
+                .antMatchers("**/v1/rides/my/**").authenticated()
+                .antMatchers("**/v1/rides/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
 
                 .and()
                 .httpBasic();
