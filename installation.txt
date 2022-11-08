@@ -1,44 +1,32 @@
+Актуально для версии приложения, которая деплоится на Spring Boot (1.0.2)
+Скрипты для сбора .jar архива и запуска через командную строку в данной версии не предусмотрены.
+Только запуск через IDE.
+
 1. ОСНОВНЫЕ ПУНКТЫ
 
 В командной строке убедиться, что
 1.1) java -version >= 11 (у меня стоит openjdk version "11.0.2" 2019-01-15)
 1.2) mvn -version >= 3.8 (у меня 3.8.6)
-1.3) catalina version >= Apache Tomcat/8.5.81
-    (для запуска в Idea скачать bin архив, для деплоя непосредственно через Tomcat скачать Service Installer.
-1.4) При проблемах проверить системные переменные окружения JAVA_HOME, CATALINA_HOME, M2_HOME, Path.
-1.5) При необходимости установить свою папку для логов в logback.xml,
-путь по умолчанию - ${Домашняя-директория-пользователя}/logs/logging.log (например C:\Users\cognosce\logs\logging.log)
+1.4) При проблемах проверить системные переменные окружения JAVA_HOME, M2_HOME, Path.
+1.5) При необходимости установить свою папку для логов в logback.xml, путь по умолчанию - ./logs/logging.log
 1.6) Создать новую базу данных в pgAdmin (имя БД - final_project, user - postgres, password - password123)
 1.6.1) postgres -V >= 10
 
-ЗАПУСК ИСХОДНИКОВ В INTELLIJ IDEA:
+2. ЗАПУСК В INTELLIJ IDEA:
 2) Установить соединение c БД внутри IntelliJ IDEA
 2.1) Запустить скрипт src\main\recourses\database\ddl-script.sql
      Запустить скрипт src\main\recourses\database\dml-script.sql
-3) В конфигурации запуска внутри Intellij IDEA настроить Local Tomcat Server, не забыв выбрать war-архив проекта
-как артефакт для развертывания.
-
-ЗАПУСК ВНУТРИ TOMCAT:
+ИЛИ:
 2) В командной строке в директории src\main\recourses\database:
     Ввести: psql -U postgres -d final_project -a -f ddl-script.sql
     Ввести: psql -U postgres -d final_project -a -f dml-script.sql
     ATTENTION! dml-script.sql сохранен в кодировке windows-1251, чтобы кириллица обрабатывалась корректно в cmd.
     При установке на других ОС скопировать код скрипта в любой текстовый редактор и сохранить в другой кодировке.
+ИЛИ:
+2) Скопировать код скриптов и запустить его непосредственно внутри консоли СУБД pgAdmin
 
-    ИЛИ
-    Скопировать код скриптов и запустить его непосредственно внутри консоли СУБД pgAdmin
-
-3) Запустить файл build.bat если запуск происходит на Windows.
-3.1) Если не создалась папка /target или запуск происходит на Linux, то ввести в командную строку в директории проекта команды:
-    mvn clean
-    mvn install
-4) Во время установки Tomcat Windows Service Installer указать параметры входа для администратора
-5) Запустить Tomcat сервер
-6) Перейти в Manager app, ввести параметры входа
-7) В графе war file for deploy выбрать собранный WAR-файл (FinalProject-1.0.0.war) в папке /target
-8) Нажать deploy
-9) Нажать /FinalProject-1.0.0
-10) Перейти на http://localhost:8080/FinalProject-1.0.0/v1 и увидеть содержимое README-файла
+3. Выбрать Spring Boot в качестве конфигурации запуска, указать на класс Application. Запустить приложение.
+По эндпоинту /v1 вас будет ждать приветствие "I'm running!", если всё было установлено верно.
 
 
 

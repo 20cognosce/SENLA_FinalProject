@@ -3,6 +3,7 @@ package com.senla.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,17 +21,12 @@ import java.nio.file.Paths;
 public class DefaultController {
 
     /**
-     * Default entrypoint which returns String of README.md file, which is stored in src\main\resources\doc\README.md
-     * @param request implicitly got HttpServletRequest
-     * @param response implicitly got HttpServletResponse
-     * @throws IOException if README.md not found
-     * @return content of README.md
+     * Default entrypoint which returns indicator message that everything works right
+     * @return Greeting message
      * */
 
-    //TODO: to refactor
     @GetMapping
-    public String getReadme(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String path = request.getServletContext().getRealPath("/WEB-INF/classes/doc/README.md");
-        return Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+    public ResponseEntity<String> getReadme() {
+        return ResponseEntity.ok("I'm running!");
     }
 }

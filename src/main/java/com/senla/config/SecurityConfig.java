@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/v1").permitAll()
                     .antMatchers(HttpMethod.POST, "/v1/login/**").permitAll()
 
                     .antMatchers(HttpMethod.POST, "/v1/users/root", "/v1/users/**").permitAll()
