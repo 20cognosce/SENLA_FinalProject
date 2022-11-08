@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+    //TODO: refactor
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest req) {
         HttpHeaders httpHeaders = new HttpHeaders();

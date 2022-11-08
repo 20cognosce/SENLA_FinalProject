@@ -52,6 +52,7 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
                 .orElseThrow(() -> new EntityNotFoundByIdException(id, getDefaultEntityClass()));
     }
 
+    //TODO: to refactor
     @Override
     public <DTO, O> O updateEntityFromDto(O original, DTO dto, Class<O> originalClass) {
         Field[] dtoFields = dto.getClass().getDeclaredFields();

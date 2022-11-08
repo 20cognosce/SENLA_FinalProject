@@ -26,6 +26,8 @@ public class DefaultController {
      * @throws IOException if README.md not found
      * @return content of README.md
      * */
+
+    //TODO: to refactor
     @GetMapping
     public String getReadme(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getServletContext().getRealPath("/WEB-INF/classes/doc/README.md");
