@@ -5,11 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.senla</groupId>
-	<artifactId>FinalProject</artifactId>
-	<version>1.0.0</version>
-	<packaging>war</packaging>
+	<artifactId>ScooterRentControlSystem</artifactId>
+	<version>1.0.1</version>
 
-	<name>SENLA_FinalProject</name>
+	<name>ScooterRentControlSystem</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,10 +16,12 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 
+		<!--Boot Starter Web-->
+		<spring.boot.starter.web.version>2.7.4</spring.boot.starter.web.version>
 		<!--Context-->
-		<spring.context.version>5.3.22</spring.context.version>
+		<spring.context.version>5.3.23</spring.context.version>
 		<!--WEB-->
-		<spring.webmvc.version>5.3.22</spring.webmvc.version>
+		<spring.webmvc.version>5.3.23</spring.webmvc.version>
 		<!--MODEL MAPPER-->
 		<modelmapper.version>3.1.0</modelmapper.version>
 		<!--SECURITY-->
@@ -30,12 +31,12 @@
 		<io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
 		<!--DATABASE-->
 		<hibernate.entitymanager.version>5.6.11.Final</hibernate.entitymanager.version>
-		<spring.orm.version>5.3.22</spring.orm.version>
+		<spring.orm.version>5.3.23</spring.orm.version>
 		<postgresql.version>42.5.0</postgresql.version>
 		<!--LOGGING-->
-		<logback.core.version>1.4.0</logback.core.version>
-		<logback.classic.version>1.4.0</logback.classic.version>
-		<slfj.api.version>2.0.0</slfj.api.version>
+		<logback.core.version>1.4.1</logback.core.version>
+		<logback.classic.version>1.4.1</logback.classic.version>
+		<slfj.api.version>2.0.1</slfj.api.version>
 		<!--JSON-->
 		<jackson.databind.version>2.13.4</jackson.databind.version>
 		<jackson.datatype.jsr310.version>2.13.4</jackson.datatype.jsr310.version>
@@ -43,7 +44,7 @@
 		<junit.jupiter.engine.version>5.9.0</junit.jupiter.engine.version>
 		<mockito.core.version>4.8.0</mockito.core.version>
 		<mockito.junit.jupiter.version>4.8.0</mockito.junit.jupiter.version>
-		<spring.test.version>5.3.22</spring.test.version>
+		<spring.test.version>5.3.23</spring.test.version>
 		<!--LOMBOK-->
 		<lombok.version>1.18.24</lombok.version>
 		<!--APACHE_COMMONS_LANG3-->
@@ -51,24 +52,17 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot.starter.web.version}</version>
+		</dependency>
+
 		<!--Context-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.context.version}</version>
-		</dependency>
-
-		<!--WEB-->
-		<dependency>
-		  <groupId>javax.servlet</groupId>
-		  <artifactId>javax.servlet-api</artifactId> <!-- Для регистрации Dispatcher Servlet и WEB контекста -->
-		  <version>4.0.1</version>
-		  <scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.webmvc.version}</version>
 		</dependency>
 
 		<!--DTO MAPPER-->
@@ -116,24 +110,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
-
-		<!--LOGGING-->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.core.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>ch.qos.logback</groupId>
-		  <artifactId>logback-classic</artifactId>
-		  <version>${logback.classic.version}</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.slf4j</groupId>
-		  <artifactId>slf4j-api</artifactId>
-		  <version>${slfj.api.version}</version>
-		  <scope>compile</scope>
-		</dependency> <!--Java logging specification-->
 
 		<!--JSON-->
 		<dependency>
@@ -192,7 +168,6 @@
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -223,12 +198,21 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.starter.web.version}</version>
 				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<executable>true</executable>
+					<mainClass>com.senla.Application</mainClass>
 				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

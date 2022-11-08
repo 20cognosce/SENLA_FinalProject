@@ -157,6 +157,6 @@ GRANT ALL ON SCHEMA public TO public;
 Ctrl + Alt + L - reformat code
 */
 
-/*If the table primary keys go out of sync*/
--- SELECT setval(pg_get_serial_sequence('tariff2model', 'id'), (SELECT MAX(id) FROM tariff2model) + 1);
+/*If the table primary keys go out of sync*/;
+-- SELECT setval(pg_get_serial_sequence('geolocation', 'id'), (SELECT MAX(id) FROM geolocation) + 1)
 -- SELECT setval(pg_get_serial_sequence('subscription2model', 'id'), (SELECT MAX(id) FROM subscription2model) + 1);
