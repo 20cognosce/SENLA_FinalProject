@@ -162,10 +162,9 @@
 		<!--SWAGGER-->
 		<dependency>
 			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
+			<artifactId>springfox-boot-starter</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-
 
 		<!--APACHE_COMMONS_LANG3-->
 		<dependency>

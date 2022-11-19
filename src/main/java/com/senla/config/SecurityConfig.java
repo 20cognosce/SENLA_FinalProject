@@ -28,6 +28,12 @@ public class SecurityConfig {
     private final JwtAuthProvider jwtAuthProvider;
     private final JwtAuthTokenFilter jwtAuthTokenFilter;
 
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v2/api-docs"
+    };
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(16);
@@ -40,7 +46,6 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -49,6 +54,7 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                    .antMatchers(AUTH_WHITELIST).permitAll()
                     .antMatchers(HttpMethod.GET, "/v1").permitAll()
                     .antMatchers(HttpMethod.POST, "/v1/login/**").permitAll()
 

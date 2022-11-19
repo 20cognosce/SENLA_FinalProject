@@ -9,6 +9,8 @@ import com.senla.domain.model.entity.Geolocation;
 import com.senla.domain.model.entity.RentalPoint;
 import com.senla.service.RentalPointService;
 import com.senla.utils.Geocoder;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.http.MediaType;
