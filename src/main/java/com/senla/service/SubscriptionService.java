@@ -1,7 +1,7 @@
 package com.senla.service;
 
-import com.senla.model.entity.Subscription;
-import com.senla.model.entity.User;
+import com.senla.domain.model.entity.Subscription;
+import com.senla.domain.model.entity.User;
 
 public interface SubscriptionService extends AbstractService<Subscription> {
 

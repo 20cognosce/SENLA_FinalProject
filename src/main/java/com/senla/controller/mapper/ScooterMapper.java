@@ -1,10 +1,10 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.dto.ScooterDto;
-import com.senla.controller.dto.ScooterModelDto;
-import com.senla.controller.dto.creation.ScooterCreationDto;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.ScooterModel;
+import com.senla.domain.dto.ScooterDto;
+import com.senla.domain.dto.ScooterModelDto;
+import com.senla.domain.dto.creation.ScooterCreationDto;
+import com.senla.domain.model.entity.Scooter;
+import com.senla.domain.model.entity.ScooterModel;
 import com.senla.service.ScooterService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;

@@ -1,13 +1,13 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.dto.ScooterModelDto;
-import com.senla.controller.dto.SubscriptionDto;
-import com.senla.controller.dto.User2SubscriptionDto;
-import com.senla.controller.dto.creation.SubscriptionCreationDto;
-import com.senla.controller.dto.update.SubscriptionUpdateDto;
-import com.senla.model.entity.ScooterModel;
-import com.senla.model.entity.Subscription;
-import com.senla.model.entity.User2Subscription;
+import com.senla.domain.dto.ScooterModelDto;
+import com.senla.domain.dto.SubscriptionDto;
+import com.senla.domain.dto.User2SubscriptionDto;
+import com.senla.domain.dto.creation.SubscriptionCreationDto;
+import com.senla.domain.dto.update.SubscriptionUpdateDto;
+import com.senla.domain.model.entity.ScooterModel;
+import com.senla.domain.model.entity.Subscription;
+import com.senla.domain.model.entity.User2Subscription;
 import com.senla.service.ScooterService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;

@@ -1,14 +1,14 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.dto.TariffDto;
-import com.senla.controller.dto.User2SubscriptionDto;
-import com.senla.controller.dto.UserDto;
-import com.senla.controller.dto.creation.UserCreationDto;
-import com.senla.model.entity.Tariff;
-import com.senla.model.entity.User;
-import com.senla.model.entity.User2Subscription;
-import com.senla.model.entityenum.Role;
-import com.senla.model.entityenum.UserAccountStatus;
+import com.senla.domain.dto.TariffDto;
+import com.senla.domain.dto.User2SubscriptionDto;
+import com.senla.domain.dto.UserDto;
+import com.senla.domain.dto.creation.UserCreationDto;
+import com.senla.domain.model.entity.Tariff;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entity.User2Subscription;
+import com.senla.domain.model.entityenum.Role;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import com.senla.service.TariffService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;

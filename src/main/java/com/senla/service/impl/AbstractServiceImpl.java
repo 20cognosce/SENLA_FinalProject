@@ -1,7 +1,7 @@
 package com.senla.service.impl;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.controller.dto.selection.SelectionDto;
+import com.senla.domain.dto.selection.SelectionDto;
 import com.senla.dao.AbstractDao;
 import com.senla.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;

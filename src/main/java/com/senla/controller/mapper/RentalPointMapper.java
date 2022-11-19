@@ -1,10 +1,10 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.dto.RentalPointDto;
-import com.senla.controller.dto.ScooterDto;
-import com.senla.controller.dto.creation.RentalPointCreationDto;
-import com.senla.model.entity.RentalPoint;
-import com.senla.model.entity.Scooter;
+import com.senla.domain.dto.RentalPointDto;
+import com.senla.domain.dto.ScooterDto;
+import com.senla.domain.dto.creation.RentalPointCreationDto;
+import com.senla.domain.model.entity.RentalPoint;
+import com.senla.domain.model.entity.Scooter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

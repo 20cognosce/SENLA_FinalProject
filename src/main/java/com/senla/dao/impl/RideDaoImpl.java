@@ -1,10 +1,10 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.RideDao;
-import com.senla.model.entity.Ride;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.User;
-import com.senla.model.entityenum.RideStatus;
+import com.senla.domain.model.entity.Ride;
+import com.senla.domain.model.entity.Scooter;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entityenum.RideStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Repository;

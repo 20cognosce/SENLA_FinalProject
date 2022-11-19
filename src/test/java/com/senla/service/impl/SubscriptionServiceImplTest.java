@@ -2,9 +2,9 @@ package com.senla.service.impl;
 
 import com.senla.dao.SubscriptionDao;
 import com.senla.dao.User2SubscriptionDao;
-import com.senla.model.entity.Subscription;
-import com.senla.model.entity.User;
-import com.senla.model.entity.User2Subscription;
+import com.senla.domain.model.entity.Subscription;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entity.User2Subscription;
 import com.senla.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -2,8 +2,8 @@ package com.senla.service.impl;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
 import com.senla.dao.UserDao;
-import com.senla.model.entity.User;
-import com.senla.model.entityenum.UserAccountStatus;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import com.senla.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;

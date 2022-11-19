@@ -16,9 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.senla.model.entityenum.Role.ADMIN;
-import static com.senla.model.entityenum.Role.MANAGER;
-import static com.senla.model.entityenum.Role.ROOT;
+import static com.senla.domain.model.entityenum.Role.ADMIN;
+import static com.senla.domain.model.entityenum.Role.MANAGER;
+import static com.senla.domain.model.entityenum.Role.ROOT;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -39,6 +39,7 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(jwtAuthProvider);
         return authenticationManagerBuilder.build();
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

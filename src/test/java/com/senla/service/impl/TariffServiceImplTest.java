@@ -1,9 +1,9 @@
 package com.senla.service.impl;
 
 import com.senla.dao.TariffDao;
-import com.senla.model.entity.RentalPoint;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.Tariff;
+import com.senla.domain.model.entity.RentalPoint;
+import com.senla.domain.model.entity.Scooter;
+import com.senla.domain.model.entity.Tariff;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

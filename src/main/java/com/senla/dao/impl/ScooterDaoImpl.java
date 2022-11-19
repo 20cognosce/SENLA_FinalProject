@@ -1,7 +1,7 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.ScooterDao;
-import com.senla.model.entity.Scooter;
+import com.senla.domain.model.entity.Scooter;
 import org.springframework.stereotype.Repository;
 
 @Repository

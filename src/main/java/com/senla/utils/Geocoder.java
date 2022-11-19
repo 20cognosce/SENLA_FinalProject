@@ -2,7 +2,7 @@ package com.senla.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.senla.model.entity.Geolocation;
+import com.senla.domain.model.entity.Geolocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

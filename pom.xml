@@ -17,7 +17,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 
 		<!--Boot Starter Web-->
-		<spring.boot.starter.web.version>2.7.4</spring.boot.starter.web.version>
+		<spring.boot.starter.web.version>2.7.5</spring.boot.starter.web.version>
 		<!--Context-->
 		<spring.context.version>5.3.23</spring.context.version>
 		<!--WEB-->
@@ -30,7 +30,7 @@
 		<spring.security.config.version>5.7.3</spring.security.config.version>
 		<io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
 		<!--DATABASE-->
-		<hibernate.entitymanager.version>5.6.11.Final</hibernate.entitymanager.version>
+		<hibernate.entitymanager.version>5.6.14.Final</hibernate.entitymanager.version>
 		<spring.orm.version>5.3.23</spring.orm.version>
 		<postgresql.version>42.5.0</postgresql.version>
 		<!--LOGGING-->
@@ -38,8 +38,8 @@
 		<logback.classic.version>1.4.1</logback.classic.version>
 		<slfj.api.version>2.0.1</slfj.api.version>
 		<!--JSON-->
-		<jackson.databind.version>2.13.4</jackson.databind.version>
-		<jackson.datatype.jsr310.version>2.13.4</jackson.datatype.jsr310.version>
+		<jackson.databind.version>2.14.0</jackson.databind.version>
+		<jackson.datatype.jsr310.version>2.14.0</jackson.datatype.jsr310.version>
 		<!--TESTING-->
 		<junit.jupiter.engine.version>5.9.0</junit.jupiter.engine.version>
 		<mockito.core.version>4.8.0</mockito.core.version>
@@ -47,6 +47,8 @@
 		<spring.test.version>5.3.23</spring.test.version>
 		<!--LOMBOK-->
 		<lombok.version>1.18.24</lombok.version>
+		<!--SWAGGER-->
+		<swagger.version>3.0.0</swagger.version>
 		<!--APACHE_COMMONS_LANG3-->
 		<apache.commons.lang3>3.12.0</apache.commons.lang3>
 	</properties>
@@ -156,6 +158,14 @@
 			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!--SWAGGER-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
 
 		<!--APACHE_COMMONS_LANG3-->
 		<dependency>

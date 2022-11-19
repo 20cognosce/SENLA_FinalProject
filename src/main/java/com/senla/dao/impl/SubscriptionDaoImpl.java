@@ -1,7 +1,7 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.SubscriptionDao;
-import com.senla.model.entity.Subscription;
+import com.senla.domain.model.entity.Subscription;
 import org.springframework.stereotype.Repository;
 
 @Repository

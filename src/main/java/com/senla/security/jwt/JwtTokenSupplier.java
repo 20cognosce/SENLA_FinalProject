@@ -1,6 +1,7 @@
 package com.senla.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,8 @@ public class JwtTokenSupplier {
         try {
             return !Jwts.parser().setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token).getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            log.error("Валидация JWT токена прошла неуспешно", e);
-            throw new IllegalArgumentException("Валидация JWT токена прошла неуспешно");
+            log.error("JWT token validation failed", e);
+            throw new JwtException("JWT token validation failed", e);
         }
     }
 

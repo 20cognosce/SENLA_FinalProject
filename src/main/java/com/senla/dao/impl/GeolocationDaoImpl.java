@@ -1,7 +1,7 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.GeolocationDao;
-import com.senla.model.entity.Geolocation;
+import com.senla.domain.model.entity.Geolocation;
 import org.springframework.stereotype.Repository;
 
 @Repository

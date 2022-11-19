@@ -1,7 +1,7 @@
 package com.senla.service;
 
-import com.senla.controller.dto.LoginDto;
-import com.senla.model.entity.User;
+import com.senla.domain.dto.LoginDto;
+import com.senla.domain.model.entity.User;
 
 public interface LoginService {
 

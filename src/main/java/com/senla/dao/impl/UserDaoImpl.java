@@ -1,9 +1,9 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.UserDao;
-import com.senla.model.entity.User;
-import com.senla.model.entityenum.Role;
-import com.senla.model.entityenum.UserAccountStatus;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entityenum.Role;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;

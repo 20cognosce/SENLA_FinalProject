@@ -1,9 +1,9 @@
 package com.senla.service.impl;
 
-import com.senla.controller.dto.LoginDto;
+import com.senla.domain.dto.LoginDto;
 import com.senla.dao.UserDao;
-import com.senla.model.entity.User;
-import com.senla.model.entityenum.UserAccountStatus;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import com.senla.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

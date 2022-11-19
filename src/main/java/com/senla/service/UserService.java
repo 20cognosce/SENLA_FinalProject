@@ -1,6 +1,6 @@
 package com.senla.service;
 
-import com.senla.model.entity.User;
+import com.senla.domain.model.entity.User;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;

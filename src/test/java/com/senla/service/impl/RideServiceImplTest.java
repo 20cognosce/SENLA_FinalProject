@@ -1,16 +1,16 @@
 package com.senla.service.impl;
 
 import com.senla.dao.RideDao;
-import com.senla.model.entity.RentalPoint;
-import com.senla.model.entity.Ride;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.ScooterModel;
-import com.senla.model.entity.Subscription;
-import com.senla.model.entity.Tariff;
-import com.senla.model.entity.User;
-import com.senla.model.entity.User2Subscription;
-import com.senla.model.entityenum.RideStatus;
-import com.senla.model.entityenum.ScooterConditionStatus;
+import com.senla.domain.model.entity.RentalPoint;
+import com.senla.domain.model.entity.Ride;
+import com.senla.domain.model.entity.Scooter;
+import com.senla.domain.model.entity.ScooterModel;
+import com.senla.domain.model.entity.Subscription;
+import com.senla.domain.model.entity.Tariff;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entity.User2Subscription;
+import com.senla.domain.model.entityenum.RideStatus;
+import com.senla.domain.model.entityenum.ScooterConditionStatus;
 import com.senla.service.TariffService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

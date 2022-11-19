@@ -1,7 +1,7 @@
 package com.senla.security;
 
-import com.senla.model.entity.User;
-import com.senla.model.entityenum.UserAccountStatus;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

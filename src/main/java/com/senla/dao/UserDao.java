@@ -1,6 +1,6 @@
 package com.senla.dao;
 
-import com.senla.model.entity.User;
+import com.senla.domain.model.entity.User;
 
 import java.util.Optional;
 

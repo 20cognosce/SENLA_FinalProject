@@ -1,7 +1,7 @@
 package com.senla.service;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.controller.dto.selection.SelectionDto;
+import com.senla.domain.dto.selection.SelectionDto;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.NonUniqueResultException;

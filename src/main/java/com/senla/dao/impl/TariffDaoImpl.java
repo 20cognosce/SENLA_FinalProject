@@ -1,7 +1,7 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.TariffDao;
-import com.senla.model.entity.Tariff;
+import com.senla.domain.model.entity.Tariff;
 import org.springframework.stereotype.Repository;
 
 @Repository

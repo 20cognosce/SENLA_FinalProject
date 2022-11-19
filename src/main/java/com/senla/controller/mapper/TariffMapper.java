@@ -1,11 +1,11 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.dto.ScooterModelDto;
-import com.senla.controller.dto.TariffDto;
-import com.senla.controller.dto.creation.TariffCreationDto;
-import com.senla.controller.dto.update.TariffUpdateDto;
-import com.senla.model.entity.ScooterModel;
-import com.senla.model.entity.Tariff;
+import com.senla.domain.dto.ScooterModelDto;
+import com.senla.domain.dto.TariffDto;
+import com.senla.domain.dto.creation.TariffCreationDto;
+import com.senla.domain.dto.update.TariffUpdateDto;
+import com.senla.domain.model.entity.ScooterModel;
+import com.senla.domain.model.entity.Tariff;
 import com.senla.service.ScooterService;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;

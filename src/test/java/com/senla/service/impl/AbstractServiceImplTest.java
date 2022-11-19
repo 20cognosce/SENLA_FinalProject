@@ -1,12 +1,12 @@
 package com.senla.service.impl;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.controller.dto.selection.UserSelectionDto;
-import com.senla.controller.dto.update.UserUpdateDto;
+import com.senla.domain.dto.selection.UserSelectionDto;
+import com.senla.domain.dto.update.UserUpdateDto;
 import com.senla.dao.UserDao;
-import com.senla.model.entity.User;
-import com.senla.model.entityenum.Role;
-import com.senla.model.entityenum.UserAccountStatus;
+import com.senla.domain.model.entity.User;
+import com.senla.domain.model.entityenum.Role;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

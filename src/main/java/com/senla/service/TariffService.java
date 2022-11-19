@@ -1,8 +1,8 @@
 package com.senla.service;
 
-import com.senla.model.entity.RentalPoint;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.Tariff;
+import com.senla.domain.model.entity.RentalPoint;
+import com.senla.domain.model.entity.Scooter;
+import com.senla.domain.model.entity.Tariff;
 
 public interface TariffService extends AbstractService<Tariff>  {
 

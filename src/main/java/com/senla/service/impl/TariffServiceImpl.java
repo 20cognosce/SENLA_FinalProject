@@ -1,9 +1,9 @@
 package com.senla.service.impl;
 
 import com.senla.dao.TariffDao;
-import com.senla.model.entity.RentalPoint;
-import com.senla.model.entity.Scooter;
-import com.senla.model.entity.Tariff;
+import com.senla.domain.model.entity.RentalPoint;
+import com.senla.domain.model.entity.Scooter;
+import com.senla.domain.model.entity.Tariff;
 import com.senla.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

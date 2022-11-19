@@ -1,6 +1,6 @@
 package com.senla.utils;
 
-import com.senla.model.entity.RentalPoint;
+import com.senla.domain.model.entity.RentalPoint;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

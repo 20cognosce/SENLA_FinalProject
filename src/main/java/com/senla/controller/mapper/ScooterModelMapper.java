@@ -1,7 +1,7 @@
 package com.senla.controller.mapper;
 
-import com.senla.controller.dto.ScooterModelDto;
-import com.senla.model.entity.ScooterModel;
+import com.senla.domain.dto.ScooterModelDto;
+import com.senla.domain.model.entity.ScooterModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

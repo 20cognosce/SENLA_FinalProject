@@ -17,14 +17,14 @@
         <property name="show_sql">true</property>
 
         <!-- Annotated entity classes -->
-        <mapping class="com.senla.model.entity.User"/>
-        <mapping class="com.senla.model.entity.Tariff"/>
-        <mapping class="com.senla.model.entity.Subscription"/>
-        <mapping class="com.senla.model.entity.User2Subscription"/>
-        <mapping class="com.senla.model.entity.RentalPoint"/>
-        <mapping class="com.senla.model.entity.Geolocation"/>
-        <mapping class="com.senla.model.entity.Scooter"/>
-        <mapping class="com.senla.model.entity.ScooterModel"/>
-        <mapping class="com.senla.model.entity.Ride"/>
+        <mapping class="com.senla.domain.model.entity.User"/>
+        <mapping class="com.senla.domain.model.entity.Tariff"/>
+        <mapping class="com.senla.domain.model.entity.Subscription"/>
+        <mapping class="com.senla.domain.model.entity.User2Subscription"/>
+        <mapping class="com.senla.domain.model.entity.RentalPoint"/>
+        <mapping class="com.senla.domain.model.entity.Geolocation"/>
+        <mapping class="com.senla.domain.model.entity.Scooter"/>
+        <mapping class="com.senla.domain.model.entity.ScooterModel"/>
+        <mapping class="com.senla.domain.model.entity.Ride"/>
     </session-factory>
 </hibernate-configuration>

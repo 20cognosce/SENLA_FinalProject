@@ -1,7 +1,7 @@
 package com.senla.dao.impl;
 
 import com.senla.dao.RentalPointDao;
-import com.senla.model.entity.RentalPoint;
+import com.senla.domain.model.entity.RentalPoint;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Repository;
 
