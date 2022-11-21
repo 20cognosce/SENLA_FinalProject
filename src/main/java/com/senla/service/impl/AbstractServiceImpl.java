@@ -1,8 +1,8 @@
 package com.senla.service.impl;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.domain.dto.selection.SelectionDto;
 import com.senla.dao.AbstractDao;
+import com.senla.domain.dto.selection.SelectionDto;
 import com.senla.service.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -41,9 +41,10 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
     }
 
     @Override
-    public List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    public List<T> getAll(@NonNull Map<String, Object> fieldNamesAndValuesToSelectBy,
                           String orderBy, boolean ascending, int limit) {
-        return getDefaultDao().getAll(mapOfFieldNamesAndValuesToSelectBy, orderBy, ascending, limit);
+        fieldNamesAndValuesToSelectBy.entrySet().removeIf(entry -> Objects.isNull(entry.getValue()));
+        return getDefaultDao().getAll(fieldNamesAndValuesToSelectBy, orderBy, ascending, limit);
     }
 
     @Override
@@ -80,8 +81,9 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
         return original;
     }
 
+    //TODO: try in dto updating
     @Override
-    public Map<String, Object> getMapOfObjectFieldsAndValues(SelectionDto model) {
+    public Map<String, Object> getMapOfObjectFieldsAndValues(Object model) {
         if (Objects.isNull(model)) {
             return new HashMap<>();
         }
@@ -94,7 +96,9 @@ public abstract class AbstractServiceImpl<T, D extends AbstractDao<T>> implement
                 field.setAccessible(true);
                 String fieldName = field.getName();
                 Object fieldValue = field.get(model);
-                result.put(fieldName, fieldValue);
+                if (Objects.nonNull(fieldValue)) {
+                    result.put(fieldName, fieldValue);
+                }
             } catch (IllegalAccessException e) {
                 log.error("Поле объекта DTO не доступно для модификации", e);
                 throw new RuntimeException(e);

@@ -1,15 +1,13 @@
 package com.senla.controller.restcontroller;
 
+import com.senla.controller.mapper.RentalPointMapper;
 import com.senla.domain.dto.RentalPointDto;
 import com.senla.domain.dto.creation.RentalPointCreationDto;
-import com.senla.domain.dto.selection.GeolocationSelectionDto;
 import com.senla.domain.dto.update.GeolocationUpdateDto;
-import com.senla.controller.mapper.RentalPointMapper;
 import com.senla.domain.model.entity.Geolocation;
 import com.senla.domain.model.entity.RentalPoint;
 import com.senla.service.RentalPointService;
 import com.senla.utils.Geocoder;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -51,21 +50,34 @@ public class RentalPointController {
      *           "district": "МО Замоскворечье" <br>
      *       } <br>
      * </code>
-     * @param selectionModel The request body is mapped into {@link GeolocationSelectionDto} object -
-     *                       the model to get values from, for executing select query.
      * @param orderBy Field's name of {@link Geolocation} class which is used for ordering result list
      * @param asc true or false
      * @param limit Limiting the size of result list.
      * @return selected <code>List&lt;RentalPointDto&gt;</code>
      * */
+    @ApiOperation("Get all rental points by various filters")
     @GetMapping
-    public List<RentalPointDto> getAll(@RequestBody(required = false) GeolocationSelectionDto selectionModel,
+    public List<RentalPointDto> getAll(@RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
                                        @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-                                       @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
-                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
-
-        Map<String, Object> selectParameters = rentalPointService.getMapOfObjectFieldsAndValues(selectionModel);
-        selectParameters.entrySet().removeIf(entry -> Objects.isNull(entry.getValue()));
+                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit,
+                                       @RequestParam(value = "countryCode", required = false) String countryCode,
+                                       @RequestParam(value = "countryName", required = false) String countryName,
+                                       @RequestParam(value = "county", required = false) String county,
+                                       @RequestParam(value = "city", required = false) String city,
+                                       @RequestParam(value = "district", required = false) String district,
+                                       @RequestParam(value = "street", required = false) String street,
+                                       @RequestParam(value = "houseNumber", required = false) String houseNumber,
+                                       @RequestParam(value = "description", required = false) String description) {
+        Map<String, Object> selectParameters = new HashMap<>() {{
+                put("countryCode", countryCode);
+                put("countryName", countryName);
+                put("county", county);
+                put("city", city);
+                put("district", district);
+                put("street", street);
+                put("houseNumber", houseNumber);
+                put("description", description);
+        }};
         List<Geolocation> selectedGeolocations = rentalPointService.getAllGeo(selectParameters, orderBy, asc, limit);
 
         return selectedGeolocations
@@ -85,9 +97,10 @@ public class RentalPointController {
      * @param limit limiting result list size
      * @return <code>List&lt;{@link RentalPointDto}&gt;</code> of the closest rental points according to passed coordinates
      * */
-    @GetMapping(params = {"lat", "lng"})
-    public List<RentalPointDto> getAll(@RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
-                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+    @GetMapping(value = "/closest", params = {"lat", "lng"})
+    public List<RentalPointDto> getAllByCoordinates(@RequestParam(value = "lat") Double lat,
+                                                    @RequestParam(value = "lng") Double lng,
+                                                    @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
 
         List<RentalPoint> closestRentalPoints = rentalPointService.getAllTheClosest(lat, lng, limit);
 

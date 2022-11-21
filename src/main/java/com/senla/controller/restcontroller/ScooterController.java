@@ -1,9 +1,9 @@
 package com.senla.controller.restcontroller;
 
+import com.senla.controller.mapper.ScooterMapper;
 import com.senla.domain.dto.ScooterDto;
 import com.senla.domain.dto.creation.ScooterCreationDto;
 import com.senla.domain.dto.update.ScooterUpdateDto;
-import com.senla.controller.mapper.ScooterMapper;
 import com.senla.domain.model.entity.RentalPoint;
 import com.senla.domain.model.entity.Scooter;
 import com.senla.domain.model.entity.ScooterModel;

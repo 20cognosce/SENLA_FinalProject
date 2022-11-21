@@ -1,9 +1,9 @@
 package com.senla.controller.restcontroller;
 
+import com.senla.controller.mapper.SubscriptionMapper;
 import com.senla.domain.dto.SubscriptionDto;
 import com.senla.domain.dto.creation.SubscriptionCreationDto;
 import com.senla.domain.dto.update.SubscriptionUpdateDto;
-import com.senla.controller.mapper.SubscriptionMapper;
 import com.senla.domain.model.entity.Subscription;
 import com.senla.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;

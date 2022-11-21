@@ -1,9 +1,8 @@
 package com.senla.service.impl;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.domain.dto.selection.UserSelectionDto;
-import com.senla.domain.dto.update.UserUpdateDto;
 import com.senla.dao.UserDao;
+import com.senla.domain.dto.update.UserUpdateDto;
 import com.senla.domain.model.entity.User;
 import com.senla.domain.model.entityenum.Role;
 import com.senla.domain.model.entityenum.UserAccountStatus;
@@ -117,7 +116,7 @@ class AbstractServiceImplTest extends AbstractServiceImpl<User, UserDao> {
 
     @Test
     void getMapOfObjectFieldsAndValues() {
-        UserSelectionDto selectionDto = UserSelectionDto.builder()
+        User user = User.builder()
                 .id(1L)
                 .login("user@gmail.com")
                 .role(Role.USER)
@@ -137,6 +136,6 @@ class AbstractServiceImplTest extends AbstractServiceImpl<User, UserDao> {
             put("dateOfBirth", LocalDate.now());
         }};
 
-        assertEquals(map, getMapOfObjectFieldsAndValues(selectionDto));
+        assertEquals(map, getMapOfObjectFieldsAndValues(user));
     }
 }

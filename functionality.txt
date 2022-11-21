@@ -3,10 +3,17 @@
 Выполнено: @PostMapping("/root") public void createRootUser() - создание ROOT пользователя
            @PostMapping public void createUser(@RequestBody UserCreationDto userCreationDto)
 
-           @GetMapping public List<UserDto> getAll(@RequestBody(required = false) UserSelectionDto selectionModel,
+           @GetMapping public List<UserDto> getAll(
+               @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
                @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-               @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
-               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
+               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit,
+               @RequestParam(value = "id", required = false) Long id,
+               @RequestParam(value = "login", required = false) String login,
+               @RequestParam(value = "role", required = false) Role role,
+               @RequestParam(value = "status", required = false) UserAccountStatus status,
+               @RequestParam(value = "name", required = false) String name,
+               @RequestParam(value = "phone", required = false) String phone,
+               @RequestParam(value = "dateOfBirth", required = false) LocalDate dateOfBirth)
            @GetMapping(value = "/{id}") public UserDto getById(@PathVariable("id") Long id)
            @GetMapping(value = "/my") public UserDto getUserByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails)
 
@@ -38,10 +45,19 @@
 Пояснение от куратора: "Иерархическое имеется в виду страна Беларусь, область Гродненская, город Гродно, улица такая-то.
 Короче чтобы можно было спускаться от Беларуси до улицы."
 /v1/rental-points
-Выполнено: @GetMapping public List<RentalPointDto> getAll(@RequestBody(required = false) GeolocationSelectionDto selectionModel,
-               @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-               @RequestParam(value = "asc", defaultValue = "true", required = false) boolean asc,
-               @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit
+Выполнено: @GetMapping public List<RentalPointDto> getAll(
+                @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
+                @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
+                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit,
+                @RequestParam(value = "countryCode", required = false) String countryCode,
+                @RequestParam(value = "countryName", required = false) String countryName,
+                @RequestParam(value = "county", required = false) String county,
+                @RequestParam(value = "city", required = false) String city,
+                @RequestParam(value = "district", required = false) String district,
+                @RequestParam(value = "street", required = false) String street,
+                @RequestParam(value = "houseNumber", required = false) String houseNumber,
+                @RequestParam(value = "description", required = false) String description)
+           /closest
            @GetMapping(params = {"lat", "lng"}) public List<RentalPointDto> getAll(
                @RequestParam(value = "lat") Double lat, @RequestParam(value = "lng") Double lng,
                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit
@@ -120,28 +136,3 @@
 Выполнено: @GetMapping("my/{status}") public List<RideDto> getRidesByAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                @PathVariable("status") String status,
                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit)
-
-Разграничение доступа к эндпоинтам:
-.authorizeRequests()
-    .antMatchers(HttpMethod.GET, "/v1").permitAll()
-    .antMatchers(HttpMethod.POST, "/v1/login/**").permitAll()
-
-    .antMatchers(HttpMethod.POST, "/v1/users/root", "/v1/users/**").permitAll()
-    .antMatchers("/v1/users/my/**").authenticated()
-    .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
-    .antMatchers(HttpMethod.PATCH, "/v1/users/{id}/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-
-    .antMatchers(HttpMethod.GET, "v1/rental-points/**").authenticated()
-    .antMatchers(HttpMethod.PATCH, "/v1/rental-points/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-
-    .antMatchers("/v1/scooters/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
-
-    .antMatchers(HttpMethod.GET, "/v1/tariffs/**").authenticated()
-    .antMatchers("/v1/tariffs/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-    .antMatchers(HttpMethod.GET, "/v1/subscriptions/**").authenticated()
-    .antMatchers( "/v1/subscriptions/**").hasAnyAuthority(ADMIN.name(), ROOT.name())
-
-    .antMatchers("/v1/rides/my/**").authenticated()
-    .antMatchers("/v1/rides/**").hasAnyAuthority(MANAGER.name(), ADMIN.name(), ROOT.name())
-
-    .anyRequest().authenticated()

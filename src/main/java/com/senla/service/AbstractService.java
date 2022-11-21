@@ -16,7 +16,10 @@ public interface AbstractService<T> {
 
     void deleteById(Long id) throws EntityNotFoundByIdException;
 
-    List<T> getAll(@NonNull Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    /**
+     * <br><b>NOTE:</b> method does not select null values.
+     */
+    List<T> getAll(@NonNull Map<String, Object> fieldNamesAndValuesToSelectBy,
                    String orderBy,
                    boolean asc,
                    int limit);
@@ -36,17 +39,17 @@ public interface AbstractService<T> {
     <DTO, O> O updateEntityFromDto(O original, DTO dto, Class<O> originalClass);
 
     /**
-     * Converting an instance of {@link SelectionDto}, which is the model to select arguments values from, into a map
+     * Converting an instance of any object, which is the selection model, into a map of field's name and value to select
      * <p>
      *     <b>NOTE:</b>
-     *     Use only primitive types, boxed types, parsable types like LocalDate or Enum in {@link SelectionDto}
+     *     Use only primitive types, boxed types, parsable types like LocalDate or Enum in model
      *     so that it could be selected within one table's line without joins.
      * </p>
      * @author Dmitry Vert
      * @since 2022-08-17
-     * @param model an instance of any {@link SelectionDto} intended only for extracting values for query
+     * @param model an instance of any class, intended only for extracting values for query
      * @return {@link Map} that contains {@code String fieldName} as key
      * and {@code Object fieldValue} as value
      * */
-    Map<String, Object> getMapOfObjectFieldsAndValues(SelectionDto model);
+     Map<String, Object> getMapOfObjectFieldsAndValues(Object model);
 }

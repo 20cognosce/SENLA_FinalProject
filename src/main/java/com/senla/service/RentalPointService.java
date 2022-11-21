@@ -10,7 +10,7 @@ public interface RentalPointService extends AbstractService<RentalPoint> {
 
     RentalPoint getByIdWithScooters(Long id);
 
-    List<Geolocation> getAllGeo(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    List<Geolocation> getAllGeo(Map<String, Object> fieldNamesAndValuesToSelectBy,
                                 String orderBy,
                                 boolean ascending,
                                 int limit);

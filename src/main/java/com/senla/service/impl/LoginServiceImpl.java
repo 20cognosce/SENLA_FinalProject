@@ -1,7 +1,7 @@
 package com.senla.service.impl;
 
-import com.senla.domain.dto.LoginDto;
 import com.senla.dao.UserDao;
+import com.senla.domain.dto.LoginDto;
 import com.senla.domain.model.entity.User;
 import com.senla.domain.model.entityenum.UserAccountStatus;
 import com.senla.service.LoginService;

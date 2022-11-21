@@ -1,8 +1,8 @@
 package com.senla.controller.restcontroller;
 
 import com.senla.controller.customexception.EntityNotFoundByIdException;
-import com.senla.domain.dto.RideDto;
 import com.senla.controller.mapper.RideMapper;
+import com.senla.domain.dto.RideDto;
 import com.senla.domain.model.entity.RentalPoint;
 import com.senla.domain.model.entity.Ride;
 import com.senla.domain.model.entity.Scooter;
@@ -138,7 +138,7 @@ public class RideController {
 
 
     @InitBinder
-    public void initBinder(WebDataBinder binder) throws Exception {
+    public void initBinder(WebDataBinder binder) {
         final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         final CustomDateEditor dateEditor = new CustomDateEditor(df, true) {
             @Override

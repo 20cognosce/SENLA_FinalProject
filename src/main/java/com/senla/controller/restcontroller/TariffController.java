@@ -1,9 +1,9 @@
 package com.senla.controller.restcontroller;
 
+import com.senla.controller.mapper.TariffMapper;
 import com.senla.domain.dto.TariffDto;
 import com.senla.domain.dto.creation.TariffCreationDto;
 import com.senla.domain.dto.update.TariffUpdateDto;
-import com.senla.controller.mapper.TariffMapper;
 import com.senla.domain.model.entity.Tariff;
 import com.senla.service.TariffService;
 import lombok.RequiredArgsConstructor;

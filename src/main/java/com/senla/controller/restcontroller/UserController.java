@@ -6,16 +6,16 @@ import com.senla.controller.customexception.IncorrectPasswordException;
 import com.senla.controller.customexception.IncorrectPhoneException;
 import com.senla.controller.customexception.LoginAlreadyExistException;
 import com.senla.controller.customexception.PhoneAlreadyExistException;
+import com.senla.controller.mapper.UserMapper;
 import com.senla.domain.dto.UserDto;
 import com.senla.domain.dto.creation.UserCreationDto;
-import com.senla.domain.dto.selection.UserSelectionDto;
 import com.senla.domain.dto.update.UserCredentialsUpdateDto;
 import com.senla.domain.dto.update.UserUpdateDto;
-import com.senla.controller.mapper.UserMapper;
 import com.senla.domain.model.entity.Subscription;
 import com.senla.domain.model.entity.Tariff;
 import com.senla.domain.model.entity.User;
 import com.senla.domain.model.entityenum.Role;
+import com.senla.domain.model.entityenum.UserAccountStatus;
 import com.senla.security.UserDetailsImpl;
 import com.senla.service.SubscriptionService;
 import com.senla.service.TariffService;
@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -110,13 +111,26 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> getAll(@RequestBody(required = false) UserSelectionDto selectionModel,
+    public List<UserDto> getAll(@RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
                                 @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
-                                @RequestParam(value = "asc", defaultValue = BooleanUtils.TRUE, required = false) boolean asc,
-                                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+                                @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit,
+                                @RequestParam(value = "id", required = false) Long id,
+                                @RequestParam(value = "login", required = false) String login,
+                                @RequestParam(value = "role", required = false) Role role,
+                                @RequestParam(value = "status", required = false) UserAccountStatus status,
+                                @RequestParam(value = "name", required = false) String name,
+                                @RequestParam(value = "phone", required = false) String phone,
+                                @RequestParam(value = "dateOfBirth", required = false) LocalDate dateOfBirth) {
+        Map<String, Object> selectParameters = new HashMap<>() {{
+            put("id", id);
+            put("login", login);
+            put("role", role);
+            put("status", status);
+            put("name", name);
+            put("phone", phone);
+            put("dateOfBirth", dateOfBirth);
+        }};
 
-        Map<String, Object> selectParameters = userService.getMapOfObjectFieldsAndValues(selectionModel);
-        selectParameters.entrySet().removeIf(entry -> Objects.isNull(entry.getValue()));
         List<User> users = userService.getAll(selectParameters, orderBy, asc, limit);
         return users.stream().map(userMapper::convertToDto).collect(toList());
     }

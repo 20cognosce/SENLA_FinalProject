@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -27,9 +28,10 @@ public class RentalPointServiceImpl extends AbstractServiceImpl<RentalPoint, Ren
     }
 
     @Override
-    public List<Geolocation> getAllGeo(Map<String, Object> mapOfFieldNamesAndValuesToSelectBy,
+    public List<Geolocation> getAllGeo(Map<String, Object> fieldNamesAndValuesToSelectBy,
                                                 String orderBy, boolean ascending, int limit) {
-        return geolocationDao.getAll(mapOfFieldNamesAndValuesToSelectBy, orderBy, ascending, limit);
+        fieldNamesAndValuesToSelectBy.entrySet().removeIf(entry -> Objects.isNull(entry.getValue()));
+        return geolocationDao.getAll(fieldNamesAndValuesToSelectBy, orderBy, ascending, limit);
     }
 
     @Override
